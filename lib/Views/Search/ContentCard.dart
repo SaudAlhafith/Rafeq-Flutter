@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rafeq_app/DataModel/VideoCard.dart';
 import 'package:rafeq_app/Views/MyCourses/FavoritesModel.dart';
+import 'package:rafeq_app/Views/Search/SearchResultModel.dart';
 
 class ContentCard extends StatelessWidget {
   final VideoCard video;
@@ -10,8 +11,6 @@ class ContentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var favoritesModel = Provider.of<FavoritesModel>(context);
-
     return Container(
       margin: const EdgeInsets.all(20),
       height: 330,
@@ -48,7 +47,7 @@ class ContentCard extends StatelessWidget {
                 Image.network(
                   video.thumbnailURL,
                 ),
-                ContentCardData(video: video, favoritesModel: favoritesModel),
+                ContentCardData(video: video),
               ],
             ),
           )
@@ -62,14 +61,15 @@ class ContentCardData extends StatelessWidget {
   const ContentCardData({
     super.key,
     required this.video,
-    required this.favoritesModel,
   });
 
   final VideoCard video;
-  final FavoritesModel favoritesModel;
 
   @override
   Widget build(BuildContext context) {
+    var favoritesModel = Provider.of<FavoritesModel>(context);
+    var searchResultModel = Provider.of<SearchResultModel>(context);
+
     return Container(
         padding: const EdgeInsets.all(20),
         child: Row(
@@ -92,21 +92,7 @@ class ContentCardData extends StatelessWidget {
                   Text('Published: ${video.publishTime}'),
                   InkWell(
                     onTap: () async {
-                      final Uri myUrl = Uri.parse('https://example.com'); // Replace with your URL
-
-                      // You can add additional checks here to ensure it's a valid URL
-                      if (myUrl.isAbsolute) {
-                        bool canLaunchUrl = await canLaunch(myUrl.toString());
-                        if (canLaunchUrl) {
-                          launchUrl(myUrl);
-                        } else {
-                          // Handle the case when the URL cannot be launched
-                          print('Could not launch $myUrl');
-                        }
-                      } else {
-                        // Handle the case when the URL is not valid
-                        print('Invalid URL: $myUrl');
-                      }
+                      searchResultModel.openUrl(video.linkURL);
                     },
                     child: Text(
                       video.typeForamatted,

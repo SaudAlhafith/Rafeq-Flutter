@@ -30,12 +30,11 @@ class SearchResultModel extends ChangeNotifier {
   }
 
   void openUrl(String urlString,) async {
-  final Uri myUrl = Uri.parse('https://example.com'); // Replace with your URL
-
+  final Uri myUrl = Uri.parse(urlString); // Replace with your URL
   // You can add additional checks here to ensure it's a valid URL
   if (myUrl.isAbsolute) {
-    bool canLaunchUrl = await canLaunch(myUrl.toString());
-    if (canLaunchUrl) {
+    bool isLaunchable = await canLaunchUrl(myUrl);
+    if (isLaunchable) {
       launchUrl(myUrl);
     } else {
       // Handle the case when the URL cannot be launched

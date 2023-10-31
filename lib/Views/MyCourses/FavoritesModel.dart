@@ -46,7 +46,10 @@ class FavoritesModel extends ChangeNotifier {
   List<VideoCard> get favorites => _favorites;
 
   void add(VideoCard video) async {
-    await _favoritesCollection.add(video.toMap());
+    // await _favoritesCollection.add(video.toMap());
+
+    // here we are adding the video to the favorites collection and his id is the timestamp at the click moment
+    await _favoritesCollection.doc(Timestamp.fromDate(DateTime.now()).seconds.toString()).set(video.toMap());
     _loadFavorites();
   }
 

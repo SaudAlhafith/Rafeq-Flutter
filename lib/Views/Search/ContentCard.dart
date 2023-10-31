@@ -87,7 +87,7 @@ class ContentCardData extends StatelessWidget {
                 children: [
                   Text(
                     video.title,
-                    maxLines: 3,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 18,

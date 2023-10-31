@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rafeq_app/Views/CustomElevatedButton.dart';
 import 'package:rafeq_app/Views/SignInUpViewModel.dart';
 import 'package:rafeq_app/services/AuthService.dart';
 
@@ -7,8 +8,10 @@ class RegistrationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var signInUpViewModel = Provider.of<SignInUpViewModel>(context);
+    var usernameController = TextEditingController(text: signInUpViewModel.username);
     var emailController = TextEditingController(text: signInUpViewModel.email);
     var passwordController = TextEditingController(text: signInUpViewModel.password);
+    var passwordConfirmationController = TextEditingController(text: signInUpViewModel.passwordConfirmation);
 
     return Scaffold(
       body: Stack(
@@ -65,6 +68,8 @@ class RegistrationView extends StatelessWidget {
                       )),
                   const SizedBox(height: 20),
                   TextField(
+                    controller: usernameController,
+                    obscureText: false,
                     decoration: InputDecoration(
                       labelText: 'Username',
                       filled: true,
@@ -90,6 +95,7 @@ class RegistrationView extends StatelessWidget {
                   const SizedBox(height: 30),
                   TextField(
                     controller: passwordController,
+                    obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       filled: true,
@@ -103,6 +109,8 @@ class RegistrationView extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
                   TextField(
+                    controller: passwordConfirmationController,
+                    obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Confirm Password',
                       filled: true,
@@ -114,15 +122,33 @@ class RegistrationView extends StatelessWidget {
                       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 15),
+                  if (signInUpViewModel.isShowingWarning) ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          signInUpViewModel.warningMessage,
+                          style: TextStyle(fontSize: 12, color: Colors.red.withOpacity(0.8), fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(width: 5),
+                        Icon(Icons.warning, size: 12, color: Colors.red.withOpacity(0.8)),
+                      ],
+                    ),
+                  ],
+                  const SizedBox(height: 15),
                   Container(
                     width: double.infinity,
                     height: 40,
                     child: ElevatedButton(
                       onPressed: () {
-                        signInUpViewModel.updateEmailAndPass(emailController.text, passwordController.text);
-                        signInUpViewModel.signUpWithEmailAndPassword();
-                        Navigator.pop(context);
+                        signInUpViewModel.updateEmailAndPass(
+                          usernameController.text,
+                          emailController.text,
+                          passwordController.text,
+                          passwordConfirmationController.text,
+                        );
+                        signInUpViewModel.signUpWithEmailAndPassword(context);
                       },
                       child: const Text('Register'),
                     ),
@@ -131,8 +157,9 @@ class RegistrationView extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, '/login');
+                      signInUpViewModel.hideWarning();
                     },
-                    child: Text(
+                    child: const Text(
                       "Already have an account? Login now",
                       style: TextStyle(
                         color: Colors.blue, // This makes the text look like a clickable link
@@ -149,28 +176,17 @@ class RegistrationView extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.only(bottom: 80.0),
-              margin: const EdgeInsets.all(42),
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  AuthService().signInWithGoogle();
-                },
-                icon: Image.asset('AppFiles/googleLogo.png', width: 24),
-                label: const Text('Sign up with Google'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                ).copyWith(
-                  overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) return Colors.grey.withOpacity(0.05); // You can modify this for a custom splash color
-                    return null; // Use the default value for other states
-                  }),
-                  // If you want no splash effect, you can use the following instead of overlayColor:
-                  // splashFactory: NoSplash.splashFactory,
+                width: double.infinity,
+                padding: const EdgeInsets.only(bottom: 80.0),
+                margin: const EdgeInsets.all(42),
+                child: CustomElevatedButton(
+                  onPressed: () {
+                    AuthService().signInWithGoogle();
+                  },
+                  icon: Image.asset('AppFiles/googleLogo.png', width: 24),
+                  label: const Text('Sign up with Google'),
                 ),
-              ),
-            ),
+                ),
           ),
         ],
       ),

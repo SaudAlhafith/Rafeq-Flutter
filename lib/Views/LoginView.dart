@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rafeq_app/Views/CustomElevatedButton.dart';
 import 'package:rafeq_app/Views/SignInUpViewModel.dart';
 import 'package:rafeq_app/services/AuthService.dart';
 
@@ -80,6 +81,7 @@ class LoginView extends StatelessWidget {
                   const SizedBox(height: 30),
                   TextField(
                     controller: passwordController,
+                    obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       filled: true,
@@ -91,24 +93,40 @@ class LoginView extends StatelessWidget {
                       contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                     ),
                   ),
-                  const SizedBox(height: 30),
-                  Container(
-                    width: double.infinity,
-                    height: 40,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        signInUpViewModel.updateEmailAndPass(emailController.text, passwordController.text);
-                        signInUpViewModel.signInWithEmailAndPassword();
-                      },
-                      child: const Text('Login'),
+                  const SizedBox(height: 15),
+                  if (signInUpViewModel.isShowingWarning) ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          signInUpViewModel.warningMessage,
+                          style: TextStyle(fontSize: 12, color: Colors.red.withOpacity(0.8), fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(width: 5),
+                        Icon(Icons.warning, size: 12, color: Colors.red.withOpacity(0.8)),
+                      ],
                     ),
-                  ),
+                  ],
+                  const SizedBox(height: 15),
+                  Container(
+                      width: double.infinity,
+                      height: 40,
+                      child: CustomElevatedButton(
+                        onPressed: () {
+                          signInUpViewModel.updateEmailAndPass(null, emailController.text, passwordController.text, null);
+                          signInUpViewModel.signInWithEmailAndPassword();
+                        },
+                        label: const Text('Login'),
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                      )),
                   const SizedBox(height: 10), // A bit of spacing between the button and the text
                   GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, '/register');
+                      signInUpViewModel.hideWarning();
                     },
-                    child: Text(
+                    child: const Text(
                       "Don't have an account? Register now",
                       style: TextStyle(
                         color: Colors.blue, // This makes the text look like a clickable link
@@ -128,23 +146,14 @@ class LoginView extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.only(bottom: 80.0),
               margin: const EdgeInsets.all(42),
-              child: ElevatedButton.icon(
+              child: CustomElevatedButton(
                 onPressed: () {
                   AuthService().signInWithGoogle();
                 },
                 icon: Image.asset('AppFiles/googleLogo.png', width: 24),
                 label: const Text('Sign up with Google'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                ).copyWith(
-                  overlayColor: MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) return Colors.grey.withOpacity(0.05); // You can modify this for a custom splash color
-                    return null; // Use the default value for other states
-                  }),
-                  // If you want no splash effect, you can use the following instead of overlayColor:
-                  // splashFactory: NoSplash.splashFactory,
-                ),
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
               ),
             ),
           ),

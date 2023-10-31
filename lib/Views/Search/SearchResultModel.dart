@@ -31,11 +31,6 @@ class SearchResultModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void hideWarning() {
-    isShowingWarning = false;
-    notifyListeners();
-  }
-
   void toggleTextContext() {
     if (textContent == 'Eng') {
       textContent = 'عربي';
@@ -45,6 +40,11 @@ class SearchResultModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void hideWarning() {
+    isShowingWarning = false;
+    notifyListeners();
+  }
+  
   void showWarning(String message) {
     warningMessage = message;
     isShowingWarning = true;

@@ -44,8 +44,14 @@ class ContentCard extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                Image.network(
-                  video.thumbnailURL,
+                Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0), // Adjust the value for desired curvature
+                    child: Image.network(
+                      video.thumbnailURL,
+                    ),
+                  ),
                 ),
                 ContentCardData(video: video),
               ],
@@ -84,12 +90,12 @@ class ContentCardData extends StatelessWidget {
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text('Channel: ${video.channelTitle}'),
-                  Text('Published: ${video.publishTime}'),
+                  Text('Channel: ${video.channelTitle}', maxLines: 1),
+                  Text(video.publishTime),
                   InkWell(
                     onTap: () async {
                       searchResultModel.openUrl(video.linkURL);

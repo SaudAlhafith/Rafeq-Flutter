@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "331487908874",
+    "project_id": "rafeq-1e181",
+    "storage_bucket": "rafeq-1e181.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331487908874:android:e753f7a0c5128c8737fbf3",
+        "android_client_info": {
+          "package_name": "com.example.rafeq_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChOemRXBCyzzdpRC2odFhkBd9nvHPf_7w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

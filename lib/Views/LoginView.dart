@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rafeq_app/services/AuthService.dart';
 
-class LoginView extends StatelessWidget {
+class RegistrationView extends StatelessWidget {
   final Function registerCallback;
-  LoginView({required this.registerCallback});
+  RegistrationView({required this.registerCallback});
 
   @override
   Widget build(BuildContext context) {

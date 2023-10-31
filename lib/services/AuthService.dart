@@ -23,6 +23,10 @@ class AuthService {
     return _firebaseAuth.authStateChanges().map(_userFromFirebase);
   }
 
+  User? get currentUser {
+    return _userFromFirebase(_firebaseAuth.currentUser);
+  }
+
   // Google sign in
   signInWithGoogle() async {
     // begin interactive sign-in process

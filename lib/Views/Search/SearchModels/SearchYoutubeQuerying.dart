@@ -3,8 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:rafeq_app/Views/Search/SearchResultModel.dart';
 import 'dart:convert';
 
-extension SearchYoutubeQuerying on SearchResultModel  {
-
+extension SearchYoutubeQuerying on SearchResultModel {
   bool isArabic(String text) {
     RegExp arabic = RegExp(r'[\u0600-\u06FF]');
     return arabic.hasMatch(text);
@@ -50,7 +49,6 @@ extension SearchYoutubeQuerying on SearchResultModel  {
   }
 
   Future<void> fetchYoutubeData(String query, String contentType) async {
-
     final Uri url = Uri.parse('https://www.googleapis.com/youtube/v3/search?key=$API_KEY&type=$contentType&part=snippet&maxResults=10&q=$query');
 
     try {
@@ -90,6 +88,7 @@ extension SearchYoutubeQuerying on SearchResultModel  {
         final publishTime = formatDate(item['snippet']['publishTime']);
         thumbnailURL = item['snippet']['thumbnails']['medium']['url'];
         linkURL = '';
+        id = '';
         if (type == 'playlist') {
           id = item['id']['playlistId'];
           linkURL = 'https://www.youtube.com/playlist?list=$id';
@@ -99,6 +98,7 @@ extension SearchYoutubeQuerying on SearchResultModel  {
         }
 
         searchResult.add(VideoCard(
+          id: id,
           title: title,
           channelTitle: channelTitle,
           publishTime: publishTime,
@@ -113,5 +113,4 @@ extension SearchYoutubeQuerying on SearchResultModel  {
       print("No results found.");
     }
   }
-
 }

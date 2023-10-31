@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rafeq_app/DataModel/VideoCard.dart';
 import 'package:rafeq_app/Views/Search/ContentCard.dart';
 import 'package:rafeq_app/Views/Search/SearchResultModel.dart';
 

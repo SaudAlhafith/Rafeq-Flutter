@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rafeq_app/Views/SignInUpViewModel.dart';
 import 'package:rafeq_app/services/AuthService.dart';
 
-class LoginView extends StatelessWidget {
-  final Function registerCallback;
-  LoginView({required this.registerCallback});
-
+class RegistrationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var signInUpViewModel = Provider.of<SignInUpViewModel>(context);
+    var emailController = TextEditingController(text: signInUpViewModel.email);
+    var passwordController = TextEditingController(text: signInUpViewModel.password);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -72,6 +75,7 @@ class LoginView extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
                   TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       labelText: 'E-mail',
                       filled: true,
@@ -85,6 +89,7 @@ class LoginView extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
                   TextField(
+                    controller: passwordController,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       filled: true,
@@ -115,11 +120,27 @@ class LoginView extends StatelessWidget {
                     height: 40,
                     child: ElevatedButton(
                       onPressed: () {
-                        registerCallback();
+                        signInUpViewModel.updateEmailAndPass(emailController.text, passwordController.text);
+                        signInUpViewModel.signUpWithEmailAndPassword();
+                        Navigator.pop(context);
                       },
                       child: const Text('Register'),
                     ),
-                  )
+                  ),
+                  const SizedBox(height: 10), // A bit of spacing between the button and the text
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/login');
+                    },
+                    child: Text(
+                      "Already have an account? Login now",
+                      style: TextStyle(
+                        color: Colors.blue, // This makes the text look like a clickable link
+                        decoration: TextDecoration.underline,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -129,7 +150,7 @@ class LoginView extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: Container(
               width: double.infinity,
-              padding: const EdgeInsets.only(bottom: 100.0),
+              padding: const EdgeInsets.only(bottom: 80.0),
               margin: const EdgeInsets.all(42),
               child: ElevatedButton.icon(
                 onPressed: () {

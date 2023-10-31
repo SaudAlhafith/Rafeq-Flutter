@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:rafeq_app/Constants/Constants.dart';
 import 'package:rafeq_app/DataModel/VideoCard.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:rafeq_app/Views/Search/SearchModels/SearchYoutubeQuerying.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SearchResultModel extends ChangeNotifier {
@@ -20,33 +18,6 @@ class SearchResultModel extends ChangeNotifier {
   String warningMessage = "";
   bool isShowingWarning = false;
 
-  void toggleTextContext() {
-    if (textContent == 'Eng') {
-      textContent = 'عربي';
-    } else {
-      textContent = 'Eng';
-    }
-    notifyListeners();
-  }
-
-  void openUrl(String urlString,) async {
-  final Uri myUrl = Uri.parse(urlString); // Replace with your URL
-  // You can add additional checks here to ensure it's a valid URL
-  if (myUrl.isAbsolute) {
-    bool isLaunchable = await canLaunchUrl(myUrl);
-    if (isLaunchable) {
-      launchUrl(myUrl);
-    } else {
-      // Handle the case when the URL cannot be launched
-      print('Could not launch $myUrl');
-    }
-  } else {
-    // Handle the case when the URL is not valid
-    print('Invalid URL: $myUrl');
-  }
-}
-
-
   void changeSearchQuery({
     required String newSearchCode,
     required String newSearchCourse,
@@ -55,15 +26,23 @@ class SearchResultModel extends ChangeNotifier {
     searchCode = newSearchCode;
     searchCourse = newSearchCourse;
     searchLesson = newSearchLesson ?? "";
-    // searchResult.add(VideoCard(thumbnailURL: "https://i.ytimg.com/vi/M3Na5luSx50/mqdefault.jpg", title: "hello", channelTitle: "gasdgas", publishTime: "2003-42-4", linkURL: "linkURL", type: "type"));
     notifyListeners();
     searchYoutube();
     notifyListeners();
   }
 
-  bool isArabic(String text) {
-    RegExp arabic = RegExp(r'[\u0600-\u06FF]');
-    return arabic.hasMatch(text);
+  void hideWarning() {
+    isShowingWarning = false;
+    notifyListeners();
+  }
+
+  void toggleTextContext() {
+    if (textContent == 'Eng') {
+      textContent = 'عربي';
+    } else {
+      textContent = 'Eng';
+    }
+    notifyListeners();
   }
 
   void showWarning(String message) {
@@ -77,113 +56,23 @@ class SearchResultModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void searchYoutube() async {
-    String contentType = "playlist";
-    String searchQuery = "";
-
-    if (searchCode == "") {
-      showWarning("الرجاء إدخال رمز المادة.");
-      clearResults();
-      return;
-    }
-
-    if (searchCourse == "") {
-      showWarning("الرجاء إدخال اسم المادة.");
-      clearResults();
-      return;
-    }
-
-    if (searchLesson != "") {
-      if (isArabic(searchLesson) && textContent == 'Eng') {
-        showWarning("الرجاء إدخال اسم الدرس باللغة الإنجليزية.");
-        clearResults();
-        return;
-      } else if (!isArabic(searchLesson) && textContent == 'عربي') {
-        showWarning("الرجاء إدخال اسم الدرس باللغة العربية.");
-        clearResults();
-        return;
-      }
-      contentType = "video";
-    }
-
-    hideWarning();
-    if (searchLesson != "") {
-      searchQuery = searchCourse + " " + searchLesson;
-    } else {
-      searchQuery = searchCourse;
-    }
-    // Cal;ling the fetchYoutubeData
-    await fetchYoutubeData(searchQuery, contentType);
-  }
-
-  Future<void> fetchYoutubeData(String query, String contentType) async {
-
-    final Uri url = Uri.parse('https://www.googleapis.com/youtube/v3/search?key=$API_KEY&type=$contentType&part=snippet&maxResults=10&q=$query');
-
-    try {
-      final http.Response response = await http.get(url);
-
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> data = json.decode(response.body);
-        displayResults(data['items'], contentType);
+  void openUrl(
+    String urlString,
+  ) async {
+    final Uri myUrl = Uri.parse(urlString); // Replace with your URL
+    // You can add additional checks here to ensure it's a valid URL
+    if (myUrl.isAbsolute) {
+      bool isLaunchable = await canLaunchUrl(myUrl);
+      if (isLaunchable) {
+        launchUrl(myUrl);
       } else {
-        print('Error fetching data: ${response.statusCode}');
+        // Handle the case when the URL cannot be launched
+        print('Could not launch $myUrl');
       }
-    } catch (error) {
-      print('Error fetching data: $error');
-    }
-  }
-
-  String formatDate(String isoDateString) {
-    final date = DateTime.parse(isoDateString);
-    final day = date.day.toString().padLeft(2, '0');
-    final month = date.month.toString().padLeft(2, '0');
-    final year = date.year;
-    return '$day-$month-$year';
-  }
-
-  void displayResults(List<dynamic> items, String type) {
-    clearResults();
-
-    if (items.length > 0) {
-      items.forEach((item) {
-        String id;
-        String linkURL;
-        String thumbnailURL;
-
-        final String title = item['snippet']['title'];
-        final channelTitle = item['snippet']['channelTitle'];
-        // Assuming you have a Dart version of formatDate
-        final publishTime = formatDate(item['snippet']['publishTime']);
-        thumbnailURL = item['snippet']['thumbnails']['medium']['url'];
-        linkURL = '';
-        if (type == 'playlist') {
-          id = item['id']['playlistId'];
-          linkURL = 'https://www.youtube.com/playlist?list=$id';
-        } else if (type == 'video') {
-          id = item['id']['videoId'];
-          linkURL = 'https://www.youtube.com/watch?v=$id';
-        }
-
-        searchResult.add(VideoCard(
-          title: title,
-          channelTitle: channelTitle,
-          publishTime: publishTime,
-          thumbnailURL: thumbnailURL,
-          linkURL: linkURL,
-          type: type,
-        ));
-      });
     } else {
-      // Handle the case where `items` is not defined or is not a list
-      // You might handle this in your UI logic or by using some state management approach
-      print("No results found.");
+      // Handle the case when the URL is not valid
+      print('Invalid URL: $myUrl');
     }
-  }
-
-  void hideWarning() {
-    isShowingWarning = false;
-    notifyListeners();
   }
 
   // translateText(text, targetLanguage, callback) {

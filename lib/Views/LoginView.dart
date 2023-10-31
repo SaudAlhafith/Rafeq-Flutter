@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rafeq_app/Views/SignInUpViewModel.dart';
 import 'package:rafeq_app/services/AuthService.dart';
 
-class RegistrationView extends StatelessWidget {
-  final Function registerCallback;
-  RegistrationView({required this.registerCallback});
-
+class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var signInUpViewModel = Provider.of<SignInUpViewModel>(context);
+    var emailController = TextEditingController(text: signInUpViewModel.email);
+    var passwordController = TextEditingController(text: signInUpViewModel.password);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -54,24 +57,15 @@ class RegistrationView extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('Register',
+                  const Text('Login',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFF1C96F9),
                       )),
-                  const SizedBox(height: 20),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Username',
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                      border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(5)),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                    ),
-                  ),
                   const SizedBox(height: 30),
                   TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       labelText: 'E-mail',
                       filled: true,
@@ -85,21 +79,9 @@ class RegistrationView extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
                   TextField(
+                    controller: passwordController,
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      filled: true,
-                      fillColor: Colors.grey[200],
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Confirm Password',
                       filled: true,
                       fillColor: Colors.grey[200],
                       border: OutlineInputBorder(
@@ -115,11 +97,26 @@ class RegistrationView extends StatelessWidget {
                     height: 40,
                     child: ElevatedButton(
                       onPressed: () {
-                        registerCallback();
+                        signInUpViewModel.updateEmailAndPass(emailController.text, passwordController.text);
+                        signInUpViewModel.signInWithEmailAndPassword();
                       },
-                      child: const Text('Register'),
+                      child: const Text('Login'),
                     ),
-                  )
+                  ),
+                  const SizedBox(height: 10), // A bit of spacing between the button and the text
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/register');
+                    },
+                    child: Text(
+                      "Don't have an account? Register now",
+                      style: TextStyle(
+                        color: Colors.blue, // This makes the text look like a clickable link
+                        decoration: TextDecoration.underline,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -129,7 +126,7 @@ class RegistrationView extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: Container(
               width: double.infinity,
-              padding: const EdgeInsets.only(bottom: 100.0),
+              padding: const EdgeInsets.only(bottom: 80.0),
               margin: const EdgeInsets.all(42),
               child: ElevatedButton.icon(
                 onPressed: () {

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:rafeq_app/Views/HomeView.dart';
+import 'package:rafeq_app/Views/LoginView.dart';
+import 'package:rafeq_app/Views/SignInUpViewModel.dart';
 import 'package:rafeq_app/Views/MyCourses/FavoritesModel.dart';
 import 'package:rafeq_app/Views/Search/SearchResultModel.dart';
 import 'package:rafeq_app/Views/Search/SearchView.dart';
+import 'package:rafeq_app/services/AuthService.dart';
 import 'Views/RegistrationView.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,11 +19,21 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
+        StreamProvider<User?>(
+          create: (context) => AuthService().user,
+          initialData: null,
+        ),
+        Provider<AuthService>(
+          create: (context) => AuthService(),
+        ),
         ChangeNotifierProvider(
           create: (context) => FavoritesModel(),
         ),
         ChangeNotifierProvider(
           create: (context) => SearchResultModel(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SignInUpViewModel(),
         ),
         // You can add more providers as needed
       ],
@@ -30,42 +43,44 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Login",
-      home: DecisionView(),
+      title: 'Rafeeq',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      initialRoute: "/",
+      routes: {
+        '/' : (context) => Wrapper(),
+        '/login': (context) =>  LoginView(),
+        '/home': (context) => HomeView(),
+        '/register': (context) => RegistrationView(),
+      },
     );
   }
 }
 
-class DecisionView extends StatefulWidget {
-  @override
-  _DecisionViewState createState() => _DecisionViewState();
-}
-
-class _DecisionViewState extends State<DecisionView> {
-  bool isUserLoggedIn = false;
-
+class Wrapper extends StatelessWidget {
+  Wrapper({super.key});
   @override
   Widget build(BuildContext context) {
-    return isUserLoggedIn
-        ? const HomeView()
-        : LoginView(
-            registerCallback: _register,
+    final authService = Provider.of<AuthService>(context);
+
+    return StreamBuilder<User?>(
+      stream: authService.user,
+      builder: (_, AsyncSnapshot<User?> snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          final User? user = snapshot.data;
+          return user == null ? LoginView() : const HomeView();
+        } else {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
-  }
-
-  _register() {
-    setState(() {
-      isUserLoggedIn = true;
-    });
-  }
-
-  _logout() {
-    setState(() {
-      isUserLoggedIn = false;
-    });
+        }
+      },
+    );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rafeq_app/Views/MyCourses/MyCourseView.dart';
+import 'package:rafeq_app/Views/Profile/UserProfile.dart';
 import 'package:rafeq_app/Views/Search/SearchView.dart';
+import 'package:rafeq_app/services/AuthService.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -12,7 +14,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   int _currentIndex = 0;
   List<Widget> body =  [
-    Icon(Icons.person),
+    UserProfile(),
     SearchView(),
     MyCourses(),
   ];

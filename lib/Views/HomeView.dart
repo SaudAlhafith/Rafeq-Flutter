@@ -12,11 +12,12 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  int _currentIndex = 1;
+  int _currentIndex = 0;
   List<Widget> body =  [
     UserProfile(),
     SearchView(),
     MyCourses(),
+    // GOATGPTView(),
   ];
 
   @override
@@ -41,6 +42,10 @@ class _HomeViewState extends State<HomeView> {
             label: "",
             icon: Icon(Icons.search),
           ),
+          // BottomNavigationBarItem(
+          //   label: "",
+          //   icon: Icon(Icons.computer),
+          // ),
           BottomNavigationBarItem(
             label: "",
             icon: Icon(Icons.book),

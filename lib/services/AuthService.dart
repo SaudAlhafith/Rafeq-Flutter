@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -11,7 +12,8 @@ class User {
 
 class AuthService {
   final auth.FirebaseAuth _firebaseAuth = auth.FirebaseAuth.instance;
-  // make it singleton
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   User? _userFromFirebase(auth.User? user) {
     if (user == null) {
       return null;
@@ -27,36 +29,49 @@ class AuthService {
     return _userFromFirebase(_firebaseAuth.currentUser);
   }
 
-  // Google sign in
-  signInWithGoogle() async {
-    // begin interactive sign-in process
+  Future<auth.UserCredential> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    // obtain the auth details from the request
     final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
 
-    // create a new credential
     final credential = auth.GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
 
-    // finally, lets sign in
     return await _firebaseAuth.signInWithCredential(credential);
-
   }
 
-  signUpWithEmailAndPassword(String email, String password) async {
-    return await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+  Future<auth.UserCredential> signUpWithEmailAndPassword(String email, String password, String username) async {
+    final auth.UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+    auth.User? user = userCredential.user;
+
+    if (user != null) {
+      await _firestore.collection('users').doc(user.uid).set({
+        'uid': user.uid,
+        'username': username,
+        'email': email
+      });
+    }
+
+    return userCredential;
   }
 
-  singInWithEmailAndPassword(String email, String password) async {
-    return await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
+    await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
   }
 
-  logout() async {
+  Future<void> logout() async {
     return await _firebaseAuth.signOut();
   }
 
-
+  // Fetch user profile from Firestore
+  Future<Map<String, dynamic>?> fetchUserProfile(String uid) async {
+    try {
+      DocumentSnapshot userDoc = await _firestore.collection('users').doc(uid).get();
+      return userDoc.data() as Map<String, dynamic>?;
+    } catch (e) {
+      print('Error fetching user profile: $e');
+      return null;
+    }
+  }
 }

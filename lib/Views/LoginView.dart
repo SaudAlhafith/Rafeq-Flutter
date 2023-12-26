@@ -12,7 +12,7 @@ class LoginView extends StatelessWidget {
     var passwordController = TextEditingController(text: signInUpViewModel.password);
 
     return Scaffold(
-      
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           Positioned.fill(

@@ -12,16 +12,17 @@ class LoginView extends StatelessWidget {
     var passwordController = TextEditingController(text: signInUpViewModel.password);
 
     return Scaffold(
+      
       body: Stack(
         children: [
-          // Background Image
           Positioned.fill(
             child: Image.asset(
               'AppFiles/Newbackground.jpg',
               fit: BoxFit.cover,
             ),
           ),
-
+          Column(
+        children: [
           // Rfeeq Logo
           Align(
               alignment: Alignment.topCenter,
@@ -140,23 +141,26 @@ class LoginView extends StatelessWidget {
             ),
           ),
           // Google Signup Button
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.only(bottom: 80.0),
-              margin: const EdgeInsets.all(42),
-              child: CustomElevatedButton(
-                onPressed: () {
-                  AuthService().signInWithGoogle();
-                },
-                icon: Image.asset('AppFiles/googleLogo.png', width: 24),
-                label: const Text('Sign up with Google'),
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
+          
+          
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: CustomElevatedButton(
+                    onPressed: () {
+                      AuthService().signInWithGoogle();
+                    },
+                    icon: Image.asset('AppFiles/googleLogo.png', width: 24),
+                    label: const Text('Sign up with Google'),
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                  ),
+                ),
               ),
-            ),
-          ),
+        ],
+      ),
         ],
       ),
     );

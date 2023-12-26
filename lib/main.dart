@@ -54,8 +54,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/' : (context) => Wrapper(),
         '/login': (context) =>  LoginView(),
-        '/home': (context) => HomeView(),
         '/register': (context) => RegistrationView(),
+        '/home': (context) => HomeView(),
       },
     );
   }

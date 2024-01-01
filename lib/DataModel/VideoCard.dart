@@ -7,6 +7,7 @@ class VideoCard {
   final String publishTime;
   final String linkURL;
   final String type;
+  final String listStatus;
 
   VideoCard({
     required this.id,
@@ -16,6 +17,7 @@ class VideoCard {
     required this.publishTime,
     required this.linkURL,
     required this.type,
+    required this.listStatus,
   });
 
   // Convert VideoCard instance to a map
@@ -28,6 +30,7 @@ class VideoCard {
       'publishTime': publishTime,
       'linkURL': linkURL,
       'type': type,
+      'listStatus': listStatus,
     };
   }
 
@@ -41,6 +44,7 @@ class VideoCard {
       publishTime: map['publishTime'],
       linkURL: map['linkURL'],
       type: map['type'],
+      listStatus: map['listStatus'],
     );
   }
 

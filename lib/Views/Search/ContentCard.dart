@@ -78,58 +78,56 @@ class ContentCardData extends StatelessWidget {
 
     return Container(
         padding: const EdgeInsets.all(20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Stack(
           children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    video.title,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text('Channel: ${video.channelTitle}', maxLines: 1),
-                  Text(video.publishTime),
-                  InkWell(
-                    onTap: () async {
-                      searchResultModel.openUrl(video.linkURL);
-                    },
-                    child: Text(
-                      video.typeForamatted,
+             Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      video.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: Color(0xFF1C96F9),
-                        decoration: TextDecoration.none,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                ],
+                    Text('Channel: ${video.channelTitle}', maxLines: 1),
+                    Text(video.publishTime),
+                    InkWell(
+                      onTap: () async {
+                        searchResultModel.openUrl(video.linkURL);
+                      },
+                      child: Text(
+                        video.typeForamatted,
+                        style: TextStyle(
+                          color: Color(0xFF1C96F9),
+                          decoration: TextDecoration.none,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+            Container(
+              margin: EdgeInsets.only(top: 30),
+              alignment: Alignment.topRight,
+              child: IconButton(
+                icon: Icon(
+                  favoritesModel.contains(video) ? Icons.add_circle : Icons.add,
+                  color: favoritesModel.contains(video) ? Colors.blue : null,
+                  size: 30,
+                ),
+                onPressed: () {
+                  if (favoritesModel.contains(video)) {
+                    favoritesModel.remove(video);
+                  } else {
+                    favoritesModel.add(video);
+                  }
+                },
               ),
             ),
-            Column(
-              children: [
-                IconButton(
-                  icon: Icon(
-                    favoritesModel.contains(video) ? Icons.add_circle : Icons.add,
-                    color: favoritesModel.contains(video) ? Colors.blue : null,
-                    size: 30,
-                  ),
-                  onPressed: () {
-                    if (favoritesModel.contains(video)) {
-                      favoritesModel.remove(video);
-                    } else {
-                      favoritesModel.add(video);
-                    }
-                  },
-                ),
-              ],
-            ),
           ],
-        ));
+        ),
+        );
   }
 }

@@ -105,6 +105,7 @@ extension SearchYoutubeQuerying on SearchResultModel {
           thumbnailURL: thumbnailURL,
           linkURL: linkURL,
           type: type,
+          listStatus: 'none',
         ));
       });
     } else {

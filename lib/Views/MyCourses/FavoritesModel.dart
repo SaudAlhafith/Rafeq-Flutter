@@ -19,7 +19,6 @@
 //   bool contains(VideoCard video) => _favorites.contains(video);
 // }
 
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rafeq_app/DataModel/VideoCard.dart';
@@ -35,9 +34,9 @@ class FavoritesModel extends ChangeNotifier {
     _loadFavorites();
   }
 
-
   // Method to load favorites from Firestore.
   _loadFavorites() async {
+    print(favorites);
     var snapshots = await _favoritesCollection.get();
     _favorites = snapshots.docs.map((doc) => VideoCard.fromMap(doc.data() as Map<String, dynamic>)).toList();
     notifyListeners();

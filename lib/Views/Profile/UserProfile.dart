@@ -231,7 +231,7 @@ class ContentCard extends StatelessWidget {
           children: [
             Expanded(
               child: Image.network(
-                video.thumbnailURL,
+                video.thumbnailURL ?? "",
                 fit: BoxFit.cover,
                 width: double.infinity, // Make image take the full width of the card
               ),
@@ -241,13 +241,13 @@ class ContentCard extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    video.title,
+                    video.title ?? "",
                     style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    video.channelTitle,
+                    video.channelTitle ?? "",
                     style: const TextStyle(fontSize: 10, color: Colors.grey),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,

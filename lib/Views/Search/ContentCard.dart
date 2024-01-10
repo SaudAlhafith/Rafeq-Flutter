@@ -49,7 +49,7 @@ class ContentCard extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0), // Adjust the value for desired curvature
                     child: Image.network(
-                      video.thumbnailURL,
+                      video.thumbnailURL ?? "",
                     ),
                   ),
                 ),
@@ -84,7 +84,7 @@ class ContentCardData extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      video.title,
+                      video.title ?? "",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -93,13 +93,13 @@ class ContentCardData extends StatelessWidget {
                       ),
                     ),
                     Text('Channel: ${video.channelTitle}', maxLines: 1),
-                    Text(video.publishTime),
+                    Text(video.publishTime ?? ""),
                     InkWell(
                       onTap: () async {
-                        searchResultModel.openUrl(video.linkURL);
+                        searchResultModel.openUrl(video.linkURL ?? "");
                       },
                       child: Text(
-                        video.typeForamatted,
+                        video.typeFormatted,
                         style: TextStyle(
                           color: Color(0xFF1C96F9),
                           decoration: TextDecoration.none,

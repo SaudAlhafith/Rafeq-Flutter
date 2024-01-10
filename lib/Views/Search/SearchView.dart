@@ -68,20 +68,20 @@ class SearchView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: TextField(
-                        controller: searchCodeController,
-                        textAlign: TextAlign.right,
-                        decoration: InputDecoration(
-                          hintText: 'رمز المقرر',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          contentPadding: EdgeInsets.all(10),
-                        ),
-                      ),
-                    ),
+                    // SizedBox(width: 10),
+                    // Expanded(
+                    //   child: TextField(
+                    //     controller: searchCodeController,
+                    //     textAlign: TextAlign.right,
+                    //     decoration: InputDecoration(
+                    //       hintText: 'رمز المقرر',
+                    //       border: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(5),
+                    //       ),
+                    //       contentPadding: EdgeInsets.all(10),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
                 SizedBox(height: 10),

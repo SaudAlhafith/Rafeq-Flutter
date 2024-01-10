@@ -1,13 +1,12 @@
 class VideoCard {
-  final String id;
-
-  final String thumbnailURL;
-  final String title;
-  final String channelTitle;
-  final String publishTime;
-  final String linkURL;
-  final String type;
-  final String listStatus;
+  final String? id;
+  final String? thumbnailURL;
+  final String? title;
+  final String? channelTitle;
+  final String? publishTime;
+  final String? linkURL;
+  final String? type;
+  final String? listStatus;
 
   VideoCard({
     required this.id,
@@ -49,5 +48,10 @@ class VideoCard {
   }
 
   // Helper method to get the formatted type (e.g., "View Playlist" or "View Video")
-  String get typeForamatted => "View ${type[0].toUpperCase()}${type.substring(1)}";
+  String get typeFormatted {
+    if (type == null || type!.isEmpty) {
+      return "Unknown";
+    }
+    return "View ${type![0].toUpperCase()}${type!.substring(1)}";
+  }
 }

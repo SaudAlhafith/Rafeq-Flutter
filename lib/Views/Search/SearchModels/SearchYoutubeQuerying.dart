@@ -13,11 +13,11 @@ extension SearchYoutubeQuerying on SearchResultModel {
     String contentType = "playlist";
     String searchQuery = "";
 
-    if (searchCode == "") {
-      showWarning("الرجاء إدخال رمز المادة.");
-      clearResults();
-      return;
-    }
+    // if (searchCode == "") {
+    //   showWarning("الرجاء إدخال رمز المادة.");
+    //   clearResults();
+    //   return;
+    // }
 
     if (searchCourse == "") {
       showWarning("الرجاء إدخال اسم المادة.");

@@ -32,19 +32,14 @@ class FavoritesModel extends ChangeNotifier {
   final String userId;
 
   FavoritesModel() : userId = AuthService().currentUser?.uid ?? '' {
-    print("HHellooooo USserID");
-    print(userId);
     _favoritesCollection = FirebaseFirestore.instance.collection('users').doc(userId).collection('favorites');
-    print(_favoritesCollection.path);
     _loadFavorites();
-    print(favorites);
   }
 
   // Method to load favorites from Firestore.
   _loadFavorites() async {
     var snapshots = await _favoritesCollection.get();
     _favorites = snapshots.docs.map((doc) => VideoCard.fromMap(doc.data() as Map<String, dynamic>)).toList();
-    print(_favorites);
     notifyListeners();
   }
 

@@ -4,16 +4,16 @@ import 'package:rafeq_app/DataModel/VideoCard.dart';
 import 'package:rafeq_app/Views/MyCourses/FavoritesModel.dart';
 import 'package:rafeq_app/Views/Search/SearchResultModel.dart';
 
-class ContentCard extends StatelessWidget {
+class CourseVideosUI extends StatelessWidget {
   final VideoCard video;
 
-  ContentCard({required this.video});
+  CourseVideosUI({required this.video});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(20),
-      height: 330,
+      height: 110,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -29,6 +29,7 @@ class ContentCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
+            width: 8,
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
               colors: [
@@ -39,24 +40,27 @@ class ContentCard extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             )),
-            child: SizedBox(width: 10, height: 330),
           ),
           Expanded(
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 10),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0), // Adjust the value for desired curvature
-                    child: Image.network(
-                      video.thumbnailURL ?? "",
+            child: Row(
+                children: [
+                  Container(
+                    width: 150,
+                    padding: EdgeInsets.all(5),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0), // Adjust the value for desired curvature
+                      child: Image.network(
+                        video.thumbnailURL ?? "",
+                      ),
                     ),
                   ),
-                ),
-                ContentCardData(video: video, size: 1),
-              ],
-            ),
-          )
+                  Container(
+                    width: 200,
+                    child: ContentCardData(video: video, size: 2),
+                    ),
+                ],
+              ),
+          ),
         ],
       ),
     );

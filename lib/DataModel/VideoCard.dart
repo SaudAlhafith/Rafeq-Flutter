@@ -7,6 +7,7 @@ class VideoCard {
   final String? linkURL;
   final String? type;
   final String? listStatus;
+  bool? isSeen; // Updated to non-final to allow state change
 
   VideoCard({
     required this.id,
@@ -17,6 +18,7 @@ class VideoCard {
     required this.linkURL,
     required this.type,
     required this.listStatus,
+    this.isSeen,
   });
 
   // Convert VideoCard instance to a map
@@ -30,6 +32,7 @@ class VideoCard {
       'linkURL': linkURL,
       'type': type,
       'listStatus': listStatus,
+      'isSeen': isSeen,
     };
   }
 
@@ -44,6 +47,7 @@ class VideoCard {
       linkURL: map['linkURL'],
       type: map['type'],
       listStatus: map['listStatus'],
+      isSeen: map['isSeen'],
     );
   }
 
@@ -53,5 +57,10 @@ class VideoCard {
       return "Unknown";
     }
     return "View ${type![0].toUpperCase()}${type!.substring(1)}";
+  }
+
+  // Method to change the state of isSeen
+  void changeIsSeenState(bool newState) {
+    isSeen = newState;
   }
 }

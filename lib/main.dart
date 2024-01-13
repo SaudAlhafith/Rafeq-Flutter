@@ -10,12 +10,17 @@ import 'Views/RegistrationView.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:rafeq_app/firebase_options.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await Hive.initFlutter();
+
   runApp(
     MultiProvider(
       providers: [
@@ -52,8 +57,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: "/",
       routes: {
-        '/' : (context) => Wrapper(),
-        '/login': (context) =>  LoginView(),
+        '/': (context) => Wrapper(),
+        '/login': (context) => LoginView(),
         '/register': (context) => RegistrationView(),
         '/home': (context) => HomeView(),
       },

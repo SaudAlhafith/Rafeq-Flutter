@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:rafeq_app/Views/MyCourses/MyCourseView.dart';
 import 'package:rafeq_app/Views/Profile/UserProfile.dart';
-import 'package:rafeq_app/Views/Search/SearchView.dart';
-import 'package:rafeq_app/services/AuthService.dart';
 import 'package:rafeq_app/Views/RAFEQGPT/RafeqGPT.dart';
+import 'package:rafeq_app/Views/Search/SearchView.dart';
+
+import '../generated/l10n.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -14,7 +15,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   int _currentIndex = 3;
-  List<Widget> body =  [
+  List<Widget> body = [
     UserProfile(),
     SearchView(),
     RafeqGPT(),
@@ -23,6 +24,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    var localizations = S.of(context);
     return Scaffold(
       body: Center(
         child: body[_currentIndex],
@@ -35,22 +37,34 @@ class _HomeViewState extends State<HomeView> {
             _currentIndex = newIndex;
           });
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            label: "profile",
-            icon: Icon(Icons.person, color: Colors.grey,),
+            label: localizations.profile,
+            icon: Icon(
+              Icons.person,
+              color: Colors.grey,
+            ),
           ),
           BottomNavigationBarItem(
-            label: "search",
-            icon: Icon(Icons.search, color: Colors.grey,),
+            label: localizations.search,
+            icon: Icon(
+              Icons.search,
+              color: Colors.grey,
+            ),
           ),
           BottomNavigationBarItem(
-            label: "RafeeqGPT",
-            icon: Icon(Icons.computer, color: Colors.grey,),
+            label: localizations.rafeeqGPT,
+            icon: Icon(
+              Icons.computer,
+              color: Colors.grey,
+            ),
           ),
           BottomNavigationBarItem(
-            label: "My Courses",
-            icon: Icon(Icons.book, color: Colors.grey,),
+            label: localizations.myCourses,
+            icon: Icon(
+              Icons.book,
+              color: Colors.grey,
+            ),
           ),
         ],
       ),

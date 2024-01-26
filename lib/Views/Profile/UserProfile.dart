@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rafeq_app/DataModel/VideoCard.dart';
 import 'package:rafeq_app/Views/MyCourses/FavoritesModel.dart';
+import 'package:rafeq_app/Views/Profile/EditProfileScreen.dart';
+import 'package:rafeq_app/generated/l10n.dart';
 // import 'package:rafeq_app/Views/Search/ContentCard.dart';
 import 'package:rafeq_app/services/AuthService.dart';
-import 'package:rafeq_app/Views/CustomElevatedButton.dart';
 
 // class UserProfile extends StatelessWidget {
 
@@ -38,9 +39,10 @@ class UserProfile extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: Text(S.of(context).profile),
         backgroundColor: Colors.blue, // Example color for the app bar
       ),
+      drawer: _settingsDrawer(context),
       body: Stack(
         children: [
           // Background image
@@ -50,8 +52,6 @@ class UserProfile extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-
-
           SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
@@ -63,7 +63,8 @@ class UserProfile extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 60,
-                        backgroundImage: NetworkImage('https://picsum.photos/200'),
+                        backgroundImage:
+                            NetworkImage('https://picsum.photos/200'),
                         backgroundColor: Colors.blue,
                       ),
                       CircleAvatar(
@@ -86,13 +87,19 @@ class UserProfile extends StatelessWidget {
                         return Column(
                           children: [
                             Text(
-                              snapshot.data?['username'] ?? 'Username not found',
-                              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.blue),
+                              snapshot.data?['username'] ??
+                                  S.of(context).usernameNotFound,
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue),
                               textAlign: TextAlign.center,
                             ),
                             Text(
-                              snapshot.data?['email'] ?? 'Email not found',
-                              style: TextStyle(fontSize: 18, color: Colors.grey),
+                              snapshot.data?['email'] ??
+                                  S.of(context).emailNotFound,
+                              style:
+                                  TextStyle(fontSize: 18, color: Colors.grey),
                               textAlign: TextAlign.center,
                             ),
                             SizedBox(height: 30),
@@ -100,36 +107,40 @@ class UserProfile extends StatelessWidget {
                           ],
                         );
                       }
-                      return Text('User data not found');
+                      return Text(S.of(context).userDataNotFound);
                     },
                   ),
                 const SizedBox(height: 30),
-                const Text(
-                  'Achievements',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+                Text(
+                  S.of(context).achievements,
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue),
                 ),
                 Container(
                   height: 100, // Set a fixed height for the row
                   child: ListView(
-                    scrollDirection: Axis.horizontal, // Makes the list scroll horizontally
+                    scrollDirection:
+                        Axis.horizontal, // Makes the list scroll horizontally
                     children: [
                       // Gold cup for watching 10 courses
-                      const AchievementIcon(
+                      AchievementIcon(
                         iconData: Icons.emoji_events,
                         color: Colors.amber,
-                        label: '10 Courses',
+                        label: S.of(context).tenCourses,
                       ),
                       // Silver cup for watching 5 courses
-                      const AchievementIcon(
+                      AchievementIcon(
                         iconData: Icons.emoji_events,
                         color: Colors.grey,
-                        label: '5 Courses',
+                        label: S.of(context).fiveCourses,
                       ),
                       // Bronze cup for watching 3 courses
-                      const AchievementIcon(
+                      AchievementIcon(
                         iconData: Icons.emoji_events,
                         color: Colors.brown,
-                        label: '3 Courses',
+                        label: S.of(context).threeCourses,
                       ),
                       // Add more achievements as needed
                     ],
@@ -138,14 +149,19 @@ class UserProfile extends StatelessWidget {
                 // Horizontal list of achievements
                 // ... Achievement list code
                 const SizedBox(height: 30),
-                const Text(
-                  'Finished Courses',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+                Text(
+                  S.of(context).finishedCourses,
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue),
                 ),
                 // The GridView.builder to display courses in a grid of 3 columns
                 GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
-                  shrinkWrap: true, // Use this to make GridView take the space of its children
+                  physics:
+                      const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
+                  shrinkWrap:
+                      true, // Use this to make GridView take the space of its children
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3, // Number of columns
                     crossAxisSpacing: 4, // Horizontal space between items
@@ -162,7 +178,7 @@ class UserProfile extends StatelessWidget {
                   onPressed: () {
                     authService.logout();
                   },
-                  child: const Text('LogOut'),
+                  child: Text(S.of(context).logout),
                 ),
               ],
             ),
@@ -171,6 +187,54 @@ class UserProfile extends StatelessWidget {
       ),
     );
   }
+}
+
+void _openSettings(BuildContext context) {
+  Scaffold.of(context).openDrawer();
+}
+
+Drawer _settingsDrawer(BuildContext context) {
+  return Drawer(
+    child: ListView(
+      children: <Widget>[
+        DrawerHeader(
+          child: Text(S.of(context).settings,
+              style: TextStyle(color: Colors.white, fontSize: 24)),
+          decoration: BoxDecoration(color: Colors.blue),
+        ),
+        ListTile(
+          leading: Icon(Icons.edit),
+          title: Text(S.of(context).editProfile),
+          onTap: () async {
+            Navigator.pop(context); // Close the drawer
+            var authService = Provider.of<AuthService>(context, listen: false);
+            var currentUser = authService.currentUser;
+
+            if (currentUser != null) {
+              var userProfile =
+                  await authService.fetchUserProfile(currentUser.uid);
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => EditProfileScreen(
+                  initialUsername: userProfile?[
+                      'username'], // Get username from the user profile
+                  initialEmail: currentUser.email,
+                ),
+              ));
+            }
+          },
+        ),
+        ListTile(
+          leading: Icon(Icons.dark_mode),
+          title: Text(S.of(context).darkMode),
+          onTap: () {
+            // Handle Dark Mode action
+            Navigator.pop(context); // Close the drawer
+          },
+        ),
+        // ... Add more options as needed
+      ],
+    ),
+  );
 }
 
 // ... AchievementIcon class
@@ -226,14 +290,16 @@ class ContentCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10), // Rounded corners
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(10), // Clip the image with rounded corners
+        borderRadius:
+            BorderRadius.circular(10), // Clip the image with rounded corners
         child: Column(
           children: [
             Expanded(
               child: Image.network(
                 video.thumbnailURL ?? "",
                 fit: BoxFit.cover,
-                width: double.infinity, // Make image take the full width of the card
+                width: double
+                    .infinity, // Make image take the full width of the card
               ),
             ),
             Padding(
@@ -242,7 +308,8 @@ class ContentCard extends StatelessWidget {
                 children: [
                   Text(
                     video.title ?? "",
-                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.bold),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

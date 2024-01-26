@@ -91,6 +91,11 @@ class UserProfile extends StatelessWidget {
                               textAlign: TextAlign.center,
                             ),
                             Text(
+                              currentUser.uid ?? 'Username not found',
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.blue),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
                               snapshot.data?['email'] ?? 'Email not found',
                               style: TextStyle(fontSize: 18, color: Colors.grey),
                               textAlign: TextAlign.center,
@@ -112,21 +117,21 @@ class UserProfile extends StatelessWidget {
                   height: 100, // Set a fixed height for the row
                   child: ListView(
                     scrollDirection: Axis.horizontal, // Makes the list scroll horizontally
-                    children: [
+                    children: const [
                       // Gold cup for watching 10 courses
-                      const AchievementIcon(
+                      AchievementIcon(
                         iconData: Icons.emoji_events,
                         color: Colors.amber,
                         label: '10 Courses',
                       ),
                       // Silver cup for watching 5 courses
-                      const AchievementIcon(
+                      AchievementIcon(
                         iconData: Icons.emoji_events,
                         color: Colors.grey,
                         label: '5 Courses',
                       ),
                       // Bronze cup for watching 3 courses
-                      const AchievementIcon(
+                      AchievementIcon(
                         iconData: Icons.emoji_events,
                         color: Colors.brown,
                         label: '3 Courses',

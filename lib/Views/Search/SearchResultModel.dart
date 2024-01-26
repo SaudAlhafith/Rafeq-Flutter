@@ -4,7 +4,8 @@ import 'package:rafeq_app/Views/Search/SearchModels/SearchYoutubeQuerying.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SearchResultModel extends ChangeNotifier {
-  final API_KEY = 'AIzaSyBM4mERZV8sBdua6VQ5LYDlTZ7Ya4HyiQM';
+  // create an instance of youtube querying class
+  SearchYoutubeQuerying youtubeQuerying = SearchYoutubeQuerying();
 
   List<VideoCard> _searchResult = [];
 
@@ -18,6 +19,51 @@ class SearchResultModel extends ChangeNotifier {
   String warningMessage = "";
   bool isShowingWarning = false;
 
+  Future<void> searchYoutube() async {
+    String contentType = "playlist";
+    String searchQuery = "";
+
+    // if (searchCode == "") {
+    //   showWarning("الرجاء إدخال رمز المادة.");
+    //   clearResults();
+    //   return;
+    // }
+
+    bool isArabic(String text) {
+      RegExp arabic = RegExp(r'[\u0600-\u06FF]');
+      return arabic.hasMatch(text);
+    }
+
+    if (searchCourse == "") {
+      showWarning("الرجاء إدخال اسم المادة.");
+      clearResults();
+      return;
+    }
+
+    if (searchLesson != "") {
+      if (isArabic(searchLesson) && textContent == 'Eng') {
+        showWarning("الرجاء إدخال اسم الدرس باللغة الإنجليزية.");
+        clearResults();
+        return;
+      } else if (!isArabic(searchLesson) && textContent == 'عربي') {
+        showWarning("الرجاء إدخال اسم الدرس باللغة العربية.");
+        clearResults();
+        return;
+      }
+      contentType = "video";
+    }
+
+    hideWarning();
+    if (searchLesson != "") {
+      searchQuery = searchCourse + " " + searchLesson;
+    } else {
+      searchQuery = searchCourse;
+    }
+    // Cal;ling the fetchYoutubeData
+    clearResults();
+    _searchResult = await youtubeQuerying.fetchYoutubeData(searchQuery, contentType);
+  }
+
   void changeSearchQuery({
     required String newSearchCode,
     required String newSearchCourse,
@@ -27,7 +73,7 @@ class SearchResultModel extends ChangeNotifier {
     searchCourse = newSearchCourse;
     searchLesson = newSearchLesson ?? "";
     notifyListeners();
-    searchYoutube();
+    await searchYoutube();
     notifyListeners();
   }
 
@@ -44,7 +90,7 @@ class SearchResultModel extends ChangeNotifier {
     isShowingWarning = false;
     notifyListeners();
   }
-  
+
   void showWarning(String message) {
     warningMessage = message;
     isShowingWarning = true;
@@ -74,6 +120,4 @@ class SearchResultModel extends ChangeNotifier {
       print('Invalid URL: $myUrl');
     }
   }
-
 }
-

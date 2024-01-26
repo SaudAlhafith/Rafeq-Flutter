@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rafeq_app/Views/HomeView.dart';
 import 'package:rafeq_app/Views/LoginView.dart';
+import 'package:rafeq_app/Views/MyCourses/PlaylistCourses/PlaylistViewModel.dart';
 import 'package:rafeq_app/Views/SignInUpViewModel.dart';
 import 'package:rafeq_app/Views/MyCourses/FavoritesModel.dart';
 import 'package:rafeq_app/Views/Search/SearchResultModel.dart';

@@ -2,22 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rafeq_app/Views/Search/ContentCard.dart';
 import 'package:rafeq_app/Views/Search/SearchResultModel.dart';
+import 'package:rafeq_app/Views/Settings/DarkThemeProvider.dart';
 
 class SearchView extends StatelessWidget {
   SearchView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var darkThemeProvider = Provider.of<DarkThemeProvider>(context);
     var searchResultModel = Provider.of<SearchResultModel>(context);
-    final searchCodeController = TextEditingController(text: searchResultModel.searchCode);
-    final searchCourseController = TextEditingController(text: searchResultModel.searchCourse);
-    final searchLessonController = TextEditingController(text: searchResultModel.searchLesson);
+    final searchCodeController =
+        TextEditingController(text: searchResultModel.searchCode);
+    final searchCourseController =
+        TextEditingController(text: searchResultModel.searchCourse);
+    final searchLessonController =
+        TextEditingController(text: searchResultModel.searchLesson);
 
     return Scaffold(
       body: SafeArea(
           child: Column(
         children: [
           Container(
+            color: darkThemeProvider.isDarkModeEnabled
+                ? Colors.black
+                : Colors.white,
             padding: const EdgeInsets.all(10.0),
             margin: const EdgeInsets.all(20.0),
             decoration: BoxDecoration(
@@ -50,7 +58,8 @@ class SearchView extends StatelessWidget {
                         ),
                         child: Text(
                           searchResultModel.textContent,
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 12),
                         ),
                       ),
                     ),
@@ -121,18 +130,22 @@ class SearchView extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 10),
-                if (searchResultModel.isShowingWarning)...[
+                if (searchResultModel.isShowingWarning) ...[
                   Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      searchResultModel.warningMessage,
-                      style: TextStyle(fontSize: 12, color: Colors.red.withOpacity(0.8), fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(width: 5),
-                    Icon(Icons.warning, size: 12, color: Colors.red.withOpacity(0.8)),
-                  ],
-                ),
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        searchResultModel.warningMessage,
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.red.withOpacity(0.8),
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(width: 5),
+                      Icon(Icons.warning,
+                          size: 12, color: Colors.red.withOpacity(0.8)),
+                    ],
+                  ),
                 ]
               ],
             ),
@@ -158,7 +171,8 @@ class SearchResultWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: searchResultModel.searchResult.length,
-      itemBuilder: (context, index) => ContentCard(video: searchResultModel.searchResult[index]),
+      itemBuilder: (context, index) =>
+          ContentCard(video: searchResultModel.searchResult[index]),
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rafeq_app/Views/HomeView.dart';
 import 'package:rafeq_app/Views/LoginView.dart';
-import 'package:rafeq_app/Views/MyCourses/PlaylistCourses/PlaylistViewModel.dart';
 import 'package:rafeq_app/Views/SignInUpViewModel.dart';
 import 'package:rafeq_app/Views/MyCourses/FavoritesModel.dart';
 import 'package:rafeq_app/Views/Search/SearchResultModel.dart';
@@ -13,8 +12,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:rafeq_app/firebase_options.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:rafeq_app/Views/Settings/DarkThemeProvider.dart';
+import 'package:rafeq_app/Views/Settings/NotificationModel.dart';
 
 Future<void> main() async {
+  await Hive.initFlutter();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -41,6 +43,12 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (context) => SignInUpViewModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => DarkThemeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => NotificationModel(),
+        ),
         // You can add more providers as needed
       ],
       child: MyApp(),
@@ -56,6 +64,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      darkTheme: ThemeData.dark(),
+      themeMode: Provider.of<DarkThemeProvider>(context).isDarkModeEnabled
+          ? ThemeMode.dark
+          : ThemeMode.light,
       initialRoute: "/",
       routes: {
         '/': (context) => Wrapper(),

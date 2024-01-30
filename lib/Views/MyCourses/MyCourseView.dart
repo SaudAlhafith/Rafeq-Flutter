@@ -12,8 +12,10 @@ class MyCourses extends StatelessWidget {
     var favoritesModel = Provider.of<FavoritesModel>(context);
 
     // Assuming each favorite has a 'type' property which can be 'playlist' or 'video'
-    var playlists = favoritesModel.favorites.where((f) => f.type == 'playlist').toList();
-    var videos = favoritesModel.favorites.where((f) => f.type == 'video').toList();
+    var playlists =
+        favoritesModel.favorites.where((f) => f.type == 'playlist').toList();
+    var videos =
+        favoritesModel.favorites.where((f) => f.type == 'video').toList();
 
     return Scaffold(
       body: SafeArea(
@@ -75,7 +77,8 @@ class MyCourses extends StatelessWidget {
                   final video = videos[index];
 
                   return Dismissible(
-                    key: Key(video.id!), // Ensure you have a unique key for each item. 'id' should be unique.
+                    key: Key(video
+                        .id!), // Ensure you have a unique key for each item. 'id' should be unique.
                     onDismissed: (direction) {
                       // Remove the item from the list
                       favoritesModel.remove(video);

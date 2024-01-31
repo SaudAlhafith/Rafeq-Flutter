@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class User {
@@ -13,20 +14,6 @@ class AuthService {
   final auth.FirebaseAuth _firebaseAuth = auth.FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> changePassword(String newPassword) async {
-    try {
-      auth.User? currentUser = _firebaseAuth.currentUser;
-
-      if (currentUser != null) {
-        await currentUser.updatePassword(newPassword);
-        print('password changed successfuly');
-      } else {
-        print('no user is currently signed in');
-      }
-    } catch (e) {
-      print('Error changing password: $e');
-    }
-  }
 
   Future<void> updateUserProfile(
       String uid, String username, String? email) async {
@@ -135,14 +122,12 @@ class AuthService {
 
       if (currentUser != null) {
         await currentUser.updatePassword(newPassword);
-        print('Password changed successfully');
+        print('password changed successfuly');
       } else {
-        print('No user is currently signed in');
-        // Handle the case where no user is signed in
+        print('no user is currently signed in');
       }
     } catch (e) {
       print('Error changing password: $e');
-      // Handle the error, e.g., display an error message to the user
     }
   }
 

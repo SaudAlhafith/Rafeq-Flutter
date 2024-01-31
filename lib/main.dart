@@ -11,7 +11,7 @@ import 'package:rafeq_app/Views/Search/SearchResultModel.dart';
 import 'package:rafeq_app/Views/SignInUpViewModel.dart';
 import 'package:rafeq_app/firebase_options.dart';
 import 'package:rafeq_app/services/AuthService.dart';
-
+import 'package:rafeq_app/generated/l10n.dart';
 import 'Views/RegistrationView.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';

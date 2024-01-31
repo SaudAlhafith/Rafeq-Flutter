@@ -4,6 +4,8 @@ import 'package:rafeq_app/Views/Search/ContentCard.dart';
 import 'package:rafeq_app/Views/Search/SearchResultModel.dart';
 import 'package:rafeq_app/Views/Settings/DarkThemeProvider.dart';
 
+import '../../generated/l10n.dart';
+
 class SearchView extends StatelessWidget {
   SearchView({super.key});
 
@@ -17,6 +19,8 @@ class SearchView extends StatelessWidget {
         TextEditingController(text: searchResultModel.searchCourse);
     final searchLessonController =
         TextEditingController(text: searchResultModel.searchLesson);
+
+    var localizations = S.of(context);
 
     return Scaffold(
       body: SafeArea(
@@ -69,7 +73,7 @@ class SearchView extends StatelessWidget {
                         controller: searchCourseController,
                         textAlign: TextAlign.right,
                         decoration: InputDecoration(
-                          hintText: 'اسم المادة',
+                          hintText: localizations.searchMaterialName,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5),
                           ),
@@ -119,7 +123,7 @@ class SearchView extends StatelessWidget {
                         controller: searchLessonController,
                         textAlign: TextAlign.right,
                         decoration: InputDecoration(
-                          hintText: 'اسم الدرس',
+                          hintText: localizations.searchButton,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5),
                           ),

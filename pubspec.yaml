@@ -30,22 +30,27 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^6.0.5
+  provider: null
   http: ^1.1.0
   url_launcher: ^6.0.9
-  firebase_auth: 
-  cloud_firestore: ^4.12.1 
-  google_sign_in:
-
+  firebase_auth: null
+  cloud_firestore: ^4.12.1
+  google_sign_in: null
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  flutter_localizations:
+        sdk: flutter
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: "^0.13.1"
+  build_runner: null
+  hive_generator: null
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -56,7 +61,6 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter packages.
 flutter:
 
@@ -70,13 +74,10 @@ flutter:
     - AppFiles/googleLogo.png
     - AppFiles/Newbackground.jpg
     - AppFiles/RfeeqLogo.png
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
@@ -96,3 +97,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+flutter_intl:
+  enabled: true

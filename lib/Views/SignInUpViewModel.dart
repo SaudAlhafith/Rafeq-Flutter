@@ -24,7 +24,7 @@ class SignInUpViewModel extends ChangeNotifier {
   signInWithEmailAndPassword() async {
     print("Logging in with email: $email and password: $password");
     try {
-      await authService.singInWithEmailAndPassword(email, password);
+      await authService.signInWithEmailAndPassword(email, password);
     } catch (e) {
       print((e as FirebaseAuthException).code);
       if (e is FirebaseAuthException && e.code == 'INVALID_LOGIN_CREDENTIALS') {
@@ -41,7 +41,7 @@ class SignInUpViewModel extends ChangeNotifier {
   signUpWithEmailAndPassword(context) async {
     if (isValidPassword()) {
       print("SignUp with email: $email and password: $password");
-      authService.signUpWithEmailAndPassword(email, password);
+      authService.signUpWithEmailAndPassword(email, password, username);
       Navigator.pop(context);
     }
   }

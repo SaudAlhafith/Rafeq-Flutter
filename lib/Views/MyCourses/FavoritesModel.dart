@@ -1,25 +1,3 @@
-// import 'package:flutter/foundation.dart';
-// import 'package:rafeq_app/DataModel/VideoCard.dart';
-
-// class FavoritesModel extends ChangeNotifier {
-//   List<VideoCard> _favorites = [];
-
-//   List<VideoCard> get favorites => _favorites;
-
-//   void add(VideoCard video) {
-//     _favorites.add(video);
-//     notifyListeners();
-//   }
-
-//   void remove(VideoCard video) {
-//     _favorites.remove(video);
-//     notifyListeners();
-//   }
-
-//   bool contains(VideoCard video) => _favorites.contains(video);
-// }
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:rafeq_app/DataModel/VideoCard.dart';
@@ -35,7 +13,6 @@ class FavoritesModel extends ChangeNotifier {
     _loadFavorites();
   }
 
-
   // Method to load favorites from Firestore.
   _loadFavorites() async {
     var snapshots = await _favoritesCollection.get();
@@ -43,13 +20,17 @@ class FavoritesModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  updateView() {
+    notifyListeners();
+  }
+
   List<VideoCard> get favorites => _favorites;
 
   void add(VideoCard video) async {
-    // await _favoritesCollection.add(video.toMap());
+    DateTime now = DateTime.now();
+    video.timestamp = now.toIso8601String();  // Adding the timestamp to the existing video card
 
-    // here we are adding the video to the favorites collection and his id is the timestamp at the click moment
-    await _favoritesCollection.doc(Timestamp.fromDate(DateTime.now()).seconds.toString()).set(video.toMap());
+    await _favoritesCollection.doc(now.toIso8601String()).set(video.toMap());
     _loadFavorites();
   }
 

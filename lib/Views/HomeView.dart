@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:rafeq_app/Views/MyCourses/MyCourseView.dart';
 import 'package:rafeq_app/Views/Profile/UserProfile.dart';
+import 'package:rafeq_app/Views/RAFEQGPT/RafeqGPT.dart';
 import 'package:rafeq_app/Views/Search/SearchView.dart';
-import 'package:rafeq_app/services/AuthService.dart';
+
+import '../generated/l10n.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -12,38 +14,57 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  int _currentIndex = 1;
-  List<Widget> body =  [
+  int _currentIndex = 0;
+  List<Widget> body = [
     UserProfile(),
     SearchView(),
+    RafeqGPT(),
     MyCourses(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    var localizations = S.of(context);
     return Scaffold(
       body: Center(
         child: body[_currentIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        fixedColor: Colors.black,
         currentIndex: _currentIndex,
         onTap: (int newIndex) {
           setState(() {
             _currentIndex = newIndex;
           });
         },
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            label: "",
-            icon: Icon(Icons.person),
+            label: localizations.profile,
+            icon: Icon(
+              Icons.person,
+              color: Colors.grey,
+            ),
           ),
           BottomNavigationBarItem(
-            label: "",
-            icon: Icon(Icons.search),
+            label: localizations.search,
+            icon: Icon(
+              Icons.search,
+              color: Colors.grey,
+            ),
           ),
           BottomNavigationBarItem(
-            label: "",
-            icon: Icon(Icons.book),
+            label: localizations.rafeeqGPT,
+            icon: Icon(
+              Icons.computer,
+              color: Colors.grey,
+            ),
+          ),
+          BottomNavigationBarItem(
+            label: localizations.myCourses,
+            icon: Icon(
+              Icons.book,
+              color: Colors.grey,
+            ),
           ),
         ],
       ),

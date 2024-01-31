@@ -1,21 +1,27 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:rafeq_app/Views/HomeView.dart';
 import 'package:rafeq_app/Views/LoginView.dart';
-import 'package:rafeq_app/Views/SignInUpViewModel.dart';
 import 'package:rafeq_app/Views/MyCourses/FavoritesModel.dart';
 import 'package:rafeq_app/Views/Search/SearchResultModel.dart';
-import 'package:rafeq_app/Views/Search/SearchView.dart';
-import 'package:rafeq_app/services/AuthService.dart';
-import 'Views/RegistrationView.dart';
-import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:rafeq_app/Views/SignInUpViewModel.dart';
 import 'package:rafeq_app/firebase_options.dart';
+import 'package:rafeq_app/services/AuthService.dart';
+
+import 'Views/RegistrationView.dart';
+import 'generated/l10n.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await Hive.initFlutter();
+
   runApp(
     MultiProvider(
       providers: [
@@ -46,14 +52,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: Locale('en'),
+      localizationsDelegates: [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
       title: 'Rafeeq',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       initialRoute: "/",
       routes: {
-        '/' : (context) => Wrapper(),
-        '/login': (context) =>  LoginView(),
+        '/': (context) => Wrapper(),
+        '/login': (context) => LoginView(),
         '/register': (context) => RegistrationView(),
         '/home': (context) => HomeView(),
       },

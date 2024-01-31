@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rafeq_app/DataModel/VideoCard.dart';
 import 'package:rafeq_app/Views/MyCourses/FavoritesModel.dart';
+import 'package:rafeq_app/Views/MyCourses/PlaylistCourses/PlaylistViewModel.dart';
 import 'package:rafeq_app/Views/Search/SearchResultModel.dart';
 
-class ContentCard extends StatelessWidget {
+class CourseVideosUI extends StatelessWidget {
   final VideoCard video;
 
-  ContentCard({required this.video});
+  CourseVideosUI({required this.video});
 
   @override
   Widget build(BuildContext context) {
+    var playlistModel = Provider.of<PlaylistViewModel>(context);
     return Container(
-      margin: const EdgeInsets.all(20),
-      height: 330,
+      margin: const EdgeInsets.only(bottom: 10),
+      height: 110,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -29,6 +31,7 @@ class ContentCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
+            width: 8,
             decoration: const BoxDecoration(
                 gradient: LinearGradient(
               colors: [
@@ -39,13 +42,13 @@ class ContentCard extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             )),
-            child: SizedBox(width: 10, height: 330),
           ),
           Expanded(
-            child: Column(
+            child: Row(
               children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 10),
+                Container(
+                  width: 150,
+                  padding: EdgeInsets.all(5),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0), // Adjust the value for desired curvature
                     child: Image.network(
@@ -53,10 +56,13 @@ class ContentCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                ContentCardData(video: video, size: 1),
+                Container(
+                  width: 200,
+                  child: ContentCardData(video: video, size: 2),
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
@@ -77,22 +83,10 @@ class ContentCardData extends StatelessWidget {
   Widget build(BuildContext context) {
     var favoritesModel = Provider.of<FavoritesModel>(context);
     var searchResultModel = Provider.of<SearchResultModel>(context);
-
-    double calculateProgress(VideoCard video) {
-
-  // Safely parse the string to int, default to 0 if null or not a valid integer
-  int total = int.tryParse(video.totalVideos ?? "") ?? 0;
-  int completed = int.tryParse(video.completedVideos ?? "") ?? 0;
-
-  if (total == 0) {
-    return 0; // Avoid division by zero
-  }
-
-  return completed / total;
-}
+    var playlistModel = Provider.of<PlaylistViewModel>(context);
 
     return Container(
-      padding: EdgeInsets.symmetric(vertical: size == 1 ? 20 : 10, horizontal: size == 1 ? 20 : 10),
+      padding: EdgeInsets.all(size == 1 ? 20 : 10),
       child: Stack(
         children: [
           Column(
@@ -112,7 +106,7 @@ class ContentCardData extends StatelessWidget {
                 video.publishTime ?? "",
                 style: TextStyle(fontSize: size == 1 ? 12 : 10),
               ),
-              if (size == 1) ...[
+              // if (size == 1) ...[
                 InkWell(
                   onTap: () async {
                     searchResultModel.openUrl(video.linkURL ?? "");
@@ -125,14 +119,7 @@ class ContentCardData extends StatelessWidget {
                     ),
                   ),
                 ),
-              ],
-              if (size == 2) ...[
-                LinearProgressIndicator(
-                  value: calculateProgress(video), // Assuming 'video' is your VideoCard object
-                  backgroundColor: Colors.grey[200],
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                ),
-              ]
+              // ],
             ],
           ),
           // hide the button if size == 2
@@ -143,22 +130,12 @@ class ContentCardData extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: IconButton(
               icon: Icon(
-                size == 1
-                    ? favoritesModel.contains(video)
-                        ? Icons.add_circle
-                        : Icons.add
-                    : Icons.arrow_forward_ios,
+                video.isSeen != null && video.isSeen! ? Icons.check_circle : Icons.check,
                 color: favoritesModel.contains(video) ? Colors.blue : null,
                 size: 30,
               ),
               onPressed: () {
-                if (size == 1) {
-                  if (favoritesModel.contains(video)) {
-                    favoritesModel.remove(video);
-                  } else {
-                    favoritesModel.add(video);
-                  }
-                } else {}
+                playlistModel.videoDone(video);
               },
             ),
           ),

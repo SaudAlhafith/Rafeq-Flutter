@@ -12,10 +12,7 @@ class RafeqGPT extends StatefulWidget {
 
 class _RafeqGPTState extends State<RafeqGPT> {
   final TextEditingController _textController = TextEditingController();
-  List<String> _messages = [
-    "RafeqGPT: " + "hi lovely",
-    "You: " + "hi stupid ai"
-  ];
+  List<String> _messages = ["RafeqGPT: " + "hi user ", "You: " + "hi  ai"];
 
   void _sendMessage(String text) async {
     if (text.isNotEmpty) {

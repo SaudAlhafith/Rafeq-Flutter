@@ -14,7 +14,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  int _currentIndex = 3;
+  int _currentIndex = 0;
   List<Widget> body = [
     UserProfile(),
     SearchView(),

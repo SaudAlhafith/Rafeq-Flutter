@@ -57,66 +57,74 @@ class UserProfile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Center(
-                  child: Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      CircleAvatar(
-                        radius: 60,
-                        backgroundImage:
-                            NetworkImage('https://picsum.photos/200'),
-                        backgroundColor: Colors.blue,
+                Column(
+                  children: [
+                    const Center(
+                      child: Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          CircleAvatar(
+                            radius: 60,
+                            backgroundImage:
+                                NetworkImage('https://picsum.photos/200'),
+                            backgroundColor: Colors.blue,
+                          ),
+                          CircleAvatar(
+                            radius: 20,
+                            backgroundColor: Colors.white,
+                            child:
+                                Icon(Icons.edit, size: 20, color: Colors.blue),
+                          ),
+                        ],
                       ),
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.white,
-                        child: Icon(Icons.edit, size: 20, color: Colors.blue),
+                    ),
+                    const SizedBox(height: 20),
+                    if (currentUser != null)
+                      FutureBuilder<Map<String, dynamic>?>(
+                        future: authService.fetchUserProfile(currentUser.uid),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          if (snapshot.hasData) {
+                            return Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Text(
+                                  snapshot.data?['username'] ??
+                                      S.of(context).usernameNotFound,
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue),
+                                  textAlign: TextAlign.center,
+                                ),
+                                //  Text(
+                                //     currentUser.uid ?? 'Username not found',
+                                //     style: TextStyle(
+                                //         fontSize: 15,
+                                //         fontWeight: FontWeight.bold,
+                                //         color: Colors.blue),
+                                //     textAlign: TextAlign.center,
+                                //   ),
+                                Text(
+                                  snapshot.data?['email'] ?? 'Email not found',
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.grey),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 30),
+                                // ... Remaining UI elements
+                              ],
+                            );
+                          }
+                          return Text(S.of(context).userDataNotFound);
+                        },
                       ),
-                    ],
-                  ),
+                  ],
                 ),
-                const SizedBox(height: 20),
-                if (currentUser != null)
-                  FutureBuilder<Map<String, dynamic>?>(
-                    future: authService.fetchUserProfile(currentUser.uid),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      if (snapshot.hasData) {
-                        return Column(
-                          children: [
-                            Text(
-                              snapshot.data?['username'] ??
-                                  S.of(context).usernameNotFound,
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blue),
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              currentUser.uid ?? 'Username not found',
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.blue),
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              snapshot.data?['email'] ?? 'Email not found',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.grey),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(height: 30),
-                            // ... Remaining UI elements
-                          ],
-                        );
-                      }
-                      return Text(S.of(context).userDataNotFound);
-                    },
-                  ),
+
                 const SizedBox(height: 30),
                 Text(
                   S.of(context).achievements,
@@ -128,8 +136,7 @@ class UserProfile extends StatelessWidget {
                 Container(
                   height: 100, // Set a fixed height for the row
                   child: ListView(
-                    scrollDirection:
-                        Axis.horizontal, // Makes the list scroll horizontally
+                    scrollDirection: Axis.horizontal,
                     children: [
                       // Gold cup for watching 10 courses
                       AchievementIcon(

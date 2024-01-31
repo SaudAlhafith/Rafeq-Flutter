@@ -96,8 +96,15 @@ class UserProfile extends StatelessWidget {
                               textAlign: TextAlign.center,
                             ),
                             Text(
-                              snapshot.data?['email'] ??
-                                  S.of(context).emailNotFound,
+                              currentUser.uid ?? 'Username not found',
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              snapshot.data?['email'] ?? 'Email not found',
                               style:
                                   TextStyle(fontSize: 18, color: Colors.grey),
                               textAlign: TextAlign.center,

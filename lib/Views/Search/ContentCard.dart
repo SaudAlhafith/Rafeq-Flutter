@@ -78,8 +78,21 @@ class ContentCardData extends StatelessWidget {
     var favoritesModel = Provider.of<FavoritesModel>(context);
     var searchResultModel = Provider.of<SearchResultModel>(context);
 
+    double calculateProgress(VideoCard video) {
+
+  // Safely parse the string to int, default to 0 if null or not a valid integer
+  int total = int.tryParse(video.totalVideos ?? "") ?? 0;
+  int completed = int.tryParse(video.completedVideos ?? "") ?? 0;
+
+  if (total == 0) {
+    return 0; // Avoid division by zero
+  }
+
+  return completed / total;
+}
+
     return Container(
-      padding: EdgeInsets.all(size == 1 ? 20 : 10),
+      padding: EdgeInsets.symmetric(vertical: size == 1 ? 20 : 10, horizontal: size == 1 ? 20 : 10),
       child: Stack(
         children: [
           Column(
@@ -113,6 +126,13 @@ class ContentCardData extends StatelessWidget {
                   ),
                 ),
               ],
+              if (size == 2) ...[
+                LinearProgressIndicator(
+                  value: calculateProgress(video), // Assuming 'video' is your VideoCard object
+                  backgroundColor: Colors.grey[200],
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                ),
+              ]
             ],
           ),
           // hide the button if size == 2
@@ -123,16 +143,22 @@ class ContentCardData extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: IconButton(
               icon: Icon(
-                favoritesModel.contains(video) ? Icons.add_circle : Icons.add,
+                size == 1
+                    ? favoritesModel.contains(video)
+                        ? Icons.add_circle
+                        : Icons.add
+                    : Icons.arrow_forward_ios,
                 color: favoritesModel.contains(video) ? Colors.blue : null,
                 size: 30,
               ),
               onPressed: () {
-                if (favoritesModel.contains(video)) {
-                  favoritesModel.remove(video);
-                } else {
-                  favoritesModel.add(video);
-                }
+                if (size == 1) {
+                  if (favoritesModel.contains(video)) {
+                    favoritesModel.remove(video);
+                  } else {
+                    favoritesModel.add(video);
+                  }
+                } else {}
               },
             ),
           ),

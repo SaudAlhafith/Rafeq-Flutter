@@ -28,24 +28,41 @@ class EditProfileScreen extends StatelessWidget {
       return;
     }
 
-    if (_newPasswordController.text != _confirmPasswordController.text) {
+    if (_newPasswordController.text.isNotEmpty &&
+        _newPasswordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Passwords do not match')),
+        SnackBar(content: Text(S.of(context).Passwordsdonotmatch)),
       );
       return;
     }
 
     try {
       var authService = Provider.of<AuthService>(context, listen: false);
-      // Assuming you have a method to update the password in AuthService
-      await authService.updateUserPassword(_newPasswordController.text);
+      var currentUser = authService.currentUser;
+      if (currentUser != null) {
+        // Update the profile
+        await authService.updateUserProfile(
+          currentUser.uid,
+          _usernameController.text,
+          _emailController.text,
+        );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Password updated successfully')),
-      );
+        // If a new password is entered, update it
+        if (_newPasswordController.text.isNotEmpty) {
+          await authService.changePassword(_newPasswordController.text);
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(S.of(context).ProfileupdatedSuccessfully)),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('No user is currently signed in')),
+        );
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error updating password: $e')),
+        SnackBar(content: Text('Error updating profile and password: $e')),
       );
     }
   }
@@ -70,7 +87,7 @@ class EditProfileScreen extends StatelessWidget {
 
       // Show a success message
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Profile updated successfully')),
+        SnackBar(content: Text(S.of(context).ProfileupdatedSuccessfully)),
       );
 
       // Optionally, navigate back or update the UI
@@ -100,21 +117,26 @@ class EditProfileScreen extends StatelessWidget {
             ),
             TextFormField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: S.of(context).email),
+              readOnly: true,
+              decoration: InputDecoration(
+                labelText: S.of(context).email,
+                hintText: S.of(context).cannotEditEmail,
+              ),
             ),
             TextFormField(
               controller: _newPasswordController,
-              decoration: InputDecoration(labelText: 'New Password'),
+              decoration: InputDecoration(labelText: S.of(context).NewPassword),
               obscureText: true,
             ),
             TextFormField(
               controller: _confirmPasswordController,
-              decoration: InputDecoration(labelText: 'Confirm New Password'),
+              decoration:
+                  InputDecoration(labelText: S.of(context).confirmNewPassword),
               obscureText: true,
             ),
             ElevatedButton(
               onPressed: () => _updateProfileAndPassword(context),
-              child: Text('Update Profile and Password'),
+              child: Text(S.of(context).updateProfile),
             ),
           ],
         ),

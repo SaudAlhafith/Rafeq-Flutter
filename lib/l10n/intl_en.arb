@@ -29,5 +29,11 @@
     "editProfile": "Edit Profile",
     "darkMode": "Dark Mode",
     "settings": "settings",
-    "updateProfile": "updateProfile"
+    "updateProfile": "updateProfile",
+    "cannotEditEmail": "cannotEditEmail",
+    "NewPassword": "New Password",
+    "confirmNewPassword": "confirmNewPassword",
+    "Update Profile": "Update Profile",
+    "ProfileupdatedSuccessfully": "Profile updated Successfully",
+    "Passwordsdonotmatch": "Passwords do not match"
 }

@@ -128,6 +128,9 @@ class LoginView extends StatelessWidget {
                           height: 40,
                           child: CustomElevatedButton(
                             onPressed: () {
+                              String email = emailController
+                                  .text; // Get the latest email input by the user
+                              String password = passwordController.text;
                               signInUpViewModel.updateEmailAndPass(
                                   null,
                                   emailController.text,

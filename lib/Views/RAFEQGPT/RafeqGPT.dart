@@ -30,7 +30,7 @@ class _RafeqGPTState extends State<RafeqGPT> {
         headers: {
           'Content-Type': 'application/json',
           'Authorization':
-              'Bearer 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' // Replace with your API key
+              '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' // Replace with your API key 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
         },
         body: jsonEncode({
           'prompt': text,

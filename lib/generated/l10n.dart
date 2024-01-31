@@ -359,6 +359,58 @@ class S {
       args: [],
     );
   }
+
+  /// `cannotEditEmail`
+  String get cannotEditEmail {
+    return Intl.message(
+      'cannotEditEmail',
+      name: 'cannotEditEmail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Password`
+  String get NewPassword {
+    return Intl.message(
+      'New Password',
+      name: 'NewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `confirmNewPassword`
+  String get confirmNewPassword {
+    return Intl.message(
+      'confirmNewPassword',
+      name: 'confirmNewPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // skipped getter for the 'Update Profile' key
+
+  /// `Profile updated Successfully`
+  String get ProfileupdatedSuccessfully {
+    return Intl.message(
+      'Profile updated Successfully',
+      name: 'ProfileupdatedSuccessfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Passwords do not match`
+  String get Passwordsdonotmatch {
+    return Intl.message(
+      'Passwords do not match',
+      name: 'Passwordsdonotmatch',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

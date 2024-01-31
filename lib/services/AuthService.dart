@@ -13,9 +13,19 @@ class AuthService {
   final auth.FirebaseAuth _firebaseAuth = auth.FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> updateUserPassword(String newPassword) async {
-    var firebaseUser = _firebaseAuth.currentUser;
-    await firebaseUser?.updatePassword(newPassword);
+  Future<void> changePassword(String newPassword) async {
+    try {
+      auth.User? currentUser = _firebaseAuth.currentUser;
+
+      if (currentUser != null) {
+        await currentUser.updatePassword(newPassword);
+        print('password changed successfuly');
+      } else {
+        print('no user is currently signed in');
+      }
+    } catch (e) {
+      print('Error changing password: $e');
+    }
   }
 
   Future<void> updateUserProfile(

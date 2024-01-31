@@ -22,11 +22,21 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "NewPassword":
+            MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
+        "Passwordsdonotmatch":
+            MessageLookupByLibrary.simpleMessage("كلمات المرور غير متطابقة"),
+        "ProfileupdatedSuccessfully":
+            MessageLookupByLibrary.simpleMessage("تم تعديل الملف الشخصي"),
         "RafeeqChatGPT": MessageLookupByLibrary.simpleMessage("Rafeeq ChatGPT"),
         "achievements": MessageLookupByLibrary.simpleMessage("الإنجازات"),
         "alreadyHaveAccount": MessageLookupByLibrary.simpleMessage(
             "هل لديك حساب؟ تسجيل الدخول الآن"),
         "appName": MessageLookupByLibrary.simpleMessage("رفيق"),
+        "cannotEditEmail":
+            MessageLookupByLibrary.simpleMessage("cannotEditEmail"),
+        "confirmNewPassword":
+            MessageLookupByLibrary.simpleMessage("تاكيد كلمة المرور الجديدة"),
         "confirmPassword":
             MessageLookupByLibrary.simpleMessage("تأكيد كلمة المرور"),
         "darkMode": MessageLookupByLibrary.simpleMessage("الوضع الداكن"),

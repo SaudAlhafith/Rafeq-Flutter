@@ -29,5 +29,11 @@
     "editProfile": "تعديل الملف الشخصي",
     "darkMode": "الوضع الداكن",
     "settings": "الاعدادات",
-    "updateProfile": "updateProfile"
+    "updateProfile": "updateProfile",
+    "cannotEditEmail": "cannotEditEmail",
+    "NewPassword": "كلمة المرور الجديدة",
+    "confirmNewPassword": "تاكيد كلمة المرور الجديدة",
+    "Update Profile": "تعديل الملف الشخصي",
+    "ProfileupdatedSuccessfully": "تم تعديل الملف الشخصي",
+    "Passwordsdonotmatch": "كلمات المرور غير متطابقة"
 }

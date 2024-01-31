@@ -11,27 +11,23 @@ class RegistrationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var signInUpViewModel = Provider.of<SignInUpViewModel>(context);
-    var usernameController =
-        TextEditingController(text: signInUpViewModel.username);
+    var usernameController = TextEditingController(text: signInUpViewModel.username);
     var emailController = TextEditingController(text: signInUpViewModel.email);
-    var passwordController =
-        TextEditingController(text: signInUpViewModel.password);
-    var passwordConfirmationController =
-        TextEditingController(text: signInUpViewModel.passwordConfirmation);
+    var passwordController = TextEditingController(text: signInUpViewModel.password);
+    var passwordConfirmationController = TextEditingController(text: signInUpViewModel.passwordConfirmation);
     var localizations = S.of(context);
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: Stack(
-        children: [
-          // Background Image
-          Positioned.fill(
-            child: Image.asset(
-              'AppFiles/Newbackground.jpg',
-              fit: BoxFit.cover,
-            ),
+      body: Stack(children: [
+        // Background Image
+        Positioned.fill(
+          child: Image.asset(
+            'AppFiles/Newbackground.jpg',
+            fit: BoxFit.cover,
           ),
-          SingleChildScrollView(
+        ),
+        SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -49,8 +45,7 @@ class RegistrationView extends StatelessWidget {
                       ),
                       Text(
                         localizations.appName,
-                        style: TextStyle(
-                            fontSize: 26, fontWeight: FontWeight.w400),
+                        style: TextStyle(fontSize: 26, fontWeight: FontWeight.w400),
                       )
                     ],
                   ),
@@ -61,17 +56,14 @@ class RegistrationView extends StatelessWidget {
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(20.0),
                   height: 500,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 3,
-                          blurRadius: 5,
-                          offset: const Offset(0, 0),
-                        )
-                      ]),
+                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8.0), boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 3,
+                      blurRadius: 5,
+                      offset: const Offset(0, 0),
+                    )
+                  ]),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -88,11 +80,8 @@ class RegistrationView extends StatelessWidget {
                           labelText: localizations.username,
                           filled: true,
                           fillColor: Colors.grey[200],
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(5)),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 15),
+                          border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(5)),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                         ),
                       ),
                       TextField(
@@ -105,8 +94,7 @@ class RegistrationView extends StatelessWidget {
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 15),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                         ),
                       ),
                       TextField(
@@ -120,8 +108,7 @@ class RegistrationView extends StatelessWidget {
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 15),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                         ),
                       ),
                       TextField(
@@ -135,8 +122,7 @@ class RegistrationView extends StatelessWidget {
                             borderSide: BorderSide.none,
                             borderRadius: BorderRadius.circular(5),
                           ),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 15),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                         ),
                       ),
                       if (signInUpViewModel.isShowingWarning) ...[
@@ -145,71 +131,65 @@ class RegistrationView extends StatelessWidget {
                           children: [
                             Text(
                               signInUpViewModel.warningMessage,
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.red.withOpacity(0.8),
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 12, color: Colors.red.withOpacity(0.8), fontWeight: FontWeight.bold),
                             ),
                             SizedBox(width: 5),
-                            Icon(Icons.warning,
-                                size: 12, color: Colors.red.withOpacity(0.8)),
+                            Icon(Icons.warning, size: 12, color: Colors.red.withOpacity(0.8)),
                           ],
-                          const SizedBox(height: 15),
-                          Container(
-                            width: double.infinity,
-                            height: 40,
-                            child: CustomElevatedButton(
-                              onPressed: () {
-                                signInUpViewModel.updateEmailAndPass(
-                                  usernameController.text,
-                                  emailController.text,
-                                  passwordController.text,
-                                  passwordConfirmationController.text,
-                                );
-                                signInUpViewModel
-                                    .signUpWithEmailAndPassword(context);
-                              },
-                              label: const Text('Register'),
-                              backgroundColor: Colors.blue,
-                              foregroundColor: Colors.white,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/login');
-                              signInUpViewModel.hideWarning();
+                        ),
+                        SizedBox(height: 15), // Moved outside of Row and corrected
+                        Container(
+                          width: double.infinity,
+                          height: 40,
+                          child: CustomElevatedButton(
+                            onPressed: () {
+                              signInUpViewModel.updateEmailAndPass(
+                                usernameController.text,
+                                emailController.text,
+                                passwordController.text,
+                                passwordConfirmationController.text,
+                              );
+                              signInUpViewModel.signUpWithEmailAndPassword(context);
                             },
-                            child: const Text(
-                              "Already have an account? Login now",
-                              style: TextStyle(
-                                color: Colors.blue,
-                                decoration: TextDecoration.underline,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
+                            label: Text('Register'),
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white,
                           ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 50),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        width: double.infinity,
-                        child: CustomElevatedButton(
-                          onPressed: () {
-                            signInUpViewModel.updateEmailAndPass(
-                              usernameController.text,
-                              emailController.text,
-                              passwordController.text,
-                              passwordConfirmationController.text,
-                            );
-                            signInUpViewModel
-                                .signUpWithEmailAndPassword(context);
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/login');
+                            signInUpViewModel.hideWarning();
                           },
-                          label: Text(localizations.register),
-                          backgroundColor: Colors.blue,
-                          foregroundColor: Colors.white,
+                          child: Text(
+                            "Already have an account? Login now",
+                            style: TextStyle(
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                      SizedBox(height: 50),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: double.infinity,
+                          child: CustomElevatedButton(
+                            onPressed: () {
+                              signInUpViewModel.updateEmailAndPass(
+                                usernameController.text,
+                                emailController.text,
+                                passwordController.text,
+                                passwordConfirmationController.text,
+                              );
+                              signInUpViewModel.signUpWithEmailAndPassword(context);
+                            },
+                            label: Text(localizations.register),
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white,
+                          ),
                         ),
                       ),
                       GestureDetector(
@@ -220,8 +200,7 @@ class RegistrationView extends StatelessWidget {
                         child: Text(
                           localizations.alreadyHaveAccount,
                           style: TextStyle(
-                            color: Colors
-                                .blue, // This makes the text look like a clickable link
+                            color: Colors.blue, // This makes the text look like a clickable link
                             decoration: TextDecoration.underline,
                           ),
                           textAlign: TextAlign.center,
@@ -245,15 +224,12 @@ class RegistrationView extends StatelessWidget {
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.black,
                     ),
-                    SizedBox(height: 40),
-                  ],
+                  ),
                 ),
                 SizedBox(height: 40),
               ],
-            ),
-          ),
-        ],
-      ),
+            )),
+      ]),
     );
   }
 }

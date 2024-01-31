@@ -15,6 +15,8 @@ class PlaylistViewModel extends ChangeNotifier {
 
   PlaylistViewModel(this.playlist) : userId = AuthService().currentUser?.uid ?? '' {
     _playlistVideosCollection = FirebaseFirestore.instance.collection('users').doc(userId).collection('favorites').doc(playlist.timestamp).collection("videos");
+    
+    notifyListeners();
     _loadPlaylistVideos();
   }
 

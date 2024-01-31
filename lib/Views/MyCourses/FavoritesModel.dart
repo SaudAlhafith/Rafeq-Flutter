@@ -10,6 +10,7 @@ class FavoritesModel extends ChangeNotifier {
 
   FavoritesModel() : userId = AuthService().currentUser?.uid ?? '' {
     _favoritesCollection = FirebaseFirestore.instance.collection('users').doc(userId).collection('favorites');
+    notifyListeners();
     _loadFavorites();
   }
 
@@ -28,7 +29,7 @@ class FavoritesModel extends ChangeNotifier {
 
   void add(VideoCard video) async {
     DateTime now = DateTime.now();
-    video.timestamp = now.toIso8601String();  // Adding the timestamp to the existing video card
+    video.timestamp = now.toIso8601String(); // Adding the timestamp to the existing video card
 
     await _favoritesCollection.doc(now.toIso8601String()).set(video.toMap());
     _loadFavorites();

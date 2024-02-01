@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-import '../../generated/l10n.dart';
+import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:rafeq_app/Views/Settings/DarkThemeProvider.dart';
 
@@ -14,7 +11,10 @@ class RafeqGPT extends StatefulWidget {
 
 class _RafeqGPTState extends State<RafeqGPT> {
   final TextEditingController _textController = TextEditingController();
-  List<String> _messages = ["RafeqGPT: " + "hi user ", "You: " + "hi  ai"];
+  List<String> _messages = [
+    "RafeqGPT: " + "hi lovely",
+    "You: " + "hi stupid ai"
+  ];
 
   void _sendMessage(String text) async {
     if (text.isNotEmpty) {
@@ -25,11 +25,11 @@ class _RafeqGPTState extends State<RafeqGPT> {
       _textController.clear();
       var response = await http.post(
         Uri.parse(
-            'https://api.openai.com/v1/engines/gpt-3.5-turbo/completions'), // Adjusted endpoint
+            'https://api.openai.com/v1/engines/gpt-3.5-turbo/completions'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization':
-              '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' // Replace with your API key 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
+              'Bearer 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',
         },
         body: jsonEncode({
           'prompt': text,
@@ -54,10 +54,11 @@ class _RafeqGPTState extends State<RafeqGPT> {
 
   @override
   Widget build(BuildContext context) {
-    var localizations = S.of(context);
+    var darkThemeProvider = Provider.of<DarkThemeProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(localizations.RafeeqChatGPT),
+        title: Text('Flutter ChatGPT'),
       ),
       body: Column(
         children: [
@@ -66,7 +67,6 @@ class _RafeqGPTState extends State<RafeqGPT> {
               itemCount: _messages.length,
               itemBuilder: (context, index) => Container(
                 padding: EdgeInsets.all(5),
-                // if contains RafeqGPT, margin right 10 else margin left 10
                 margin: _messages[index].contains("RafeqGPT")
                     ? EdgeInsets.only(left: 10, right: 40, bottom: 20)
                     : EdgeInsets.only(left: 40, right: 10, bottom: 20),
@@ -79,7 +79,14 @@ class _RafeqGPTState extends State<RafeqGPT> {
                 alignment: _messages[index].contains("RafeqGPT")
                     ? Alignment.centerLeft
                     : Alignment.centerRight,
-                child: Text(_messages[index]),
+                child: Text(
+                  _messages[index],
+                  style: TextStyle(
+                    color: darkThemeProvider.isDarkModeEnabled
+                        ? Colors.white
+                        : Colors.black,
+                  ),
+                ),
               ),
             ),
           ),

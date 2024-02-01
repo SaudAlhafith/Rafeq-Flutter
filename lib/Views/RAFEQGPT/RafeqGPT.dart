@@ -95,11 +95,6 @@ class _RafeqGPTState extends State<RafeqGPT> {
                       labelText: 'Send a message',
                       border: OutlineInputBorder(),
                     ),
-                    style: TextStyle(
-                      color: darkThemeProvider.isDarkModeEnabled
-                          ? Colors.white
-                          : Colors.black,
-                    ),
                   ),
                 ),
                 IconButton(

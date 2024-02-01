@@ -76,6 +76,13 @@ class _HomeViewState extends State<HomeView> {
               color: Colors.grey,
             ),
           ),
+          BottomNavigationBarItem(
+            label: localizations.settings,
+            icon: Icon(
+              Icons.settings,
+              color: Colors.grey,
+            ),
+          ),
         ],
       ),
     );

@@ -96,9 +96,7 @@ class _RafeqGPTState extends State<RafeqGPT> {
                       border: OutlineInputBorder(),
                     ),
                     style: TextStyle(
-                      color: darkThemeProvider.isDarkModeEnabled
-                          ? Colors.white
-                          : Colors.black,
+                      color: Colors.white,
                     ),
                   ),
                 ),

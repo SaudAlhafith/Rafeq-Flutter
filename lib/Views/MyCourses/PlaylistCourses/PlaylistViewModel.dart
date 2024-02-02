@@ -13,16 +13,24 @@ class PlaylistViewModel extends ChangeNotifier {
 
   SearchYoutubeQuerying youtubeQuerying = SearchYoutubeQuerying();
 
-  PlaylistViewModel(this.playlist) : userId = AuthService().currentUser?.uid ?? '' {
-    _playlistVideosCollection = FirebaseFirestore.instance.collection('users').doc(userId).collection('favorites').doc(playlist.timestamp).collection("videos");
-    
+  PlaylistViewModel(this.playlist)
+      : userId = AuthService().currentUser?.uid ?? '' {
+    _playlistVideosCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('favorites')
+        .doc(playlist.timestamp)
+        .collection("videos");
+
     notifyListeners();
     _loadPlaylistVideos();
   }
 
   _loadPlaylistVideos() async {
     var snapshots = await _playlistVideosCollection.get();
-    _playlistVideos = snapshots.docs.map((doc) => VideoCard.fromMap(doc.data() as Map<String, dynamic>)).toList();
+    _playlistVideos = snapshots.docs
+        .map((doc) => VideoCard.fromMap(doc.data() as Map<String, dynamic>))
+        .toList();
     if (_playlistVideos.isEmpty) {
       await _fetchAndStorePlaylistVideos();
     }
@@ -32,7 +40,8 @@ class PlaylistViewModel extends ChangeNotifier {
   }
 
   Future<void> _fetchAndStorePlaylistVideos() async {
-    List<VideoCard> videosFromYouTube = await youtubeQuerying.fetchVideosFromYouTube(playlist.id ?? "");
+    List<VideoCard> videosFromYouTube =
+        await youtubeQuerying.fetchVideosFromYouTube(playlist.id ?? "");
 
     String totalVideosCount = videosFromYouTube.length.toString();
     playlist.totalVideos = totalVideosCount;
@@ -57,7 +66,8 @@ class PlaylistViewModel extends ChangeNotifier {
       video.isSeen = true;
 
       // Calculate the new count of completed videos
-      int newCompletedCount = _playlistVideos.where((v) => v.isSeen == true).length;
+      int newCompletedCount =
+          _playlistVideos.where((v) => v.isSeen == true).length;
       playlist.completedVideos = newCompletedCount.toString();
       // Update the completed videos count in Firestore
       await updatePlaylistMetadata();
@@ -71,7 +81,11 @@ class PlaylistViewModel extends ChangeNotifier {
 
   Future<void> updatePlaylistMetadata() async {
     try {
-      DocumentReference playlistDocRef = FirebaseFirestore.instance.collection('users').doc(userId).collection('favorites').doc(playlist.id ?? "");
+      DocumentReference playlistDocRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('favorites')
+          .doc(playlist.id ?? "");
       await playlistDocRef.update(playlist.toMap());
       // Optionally, refresh the playlist data if needed
     } catch (e) {
@@ -80,5 +94,6 @@ class PlaylistViewModel extends ChangeNotifier {
     }
   }
 
-  bool contains(VideoCard video) => _playlistVideos.any((v) => v.id == video.id);
+  bool contains(VideoCard video) =>
+      _playlistVideos.any((v) => v.id == video.id);
 }

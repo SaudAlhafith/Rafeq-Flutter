@@ -50,7 +50,8 @@ class CourseVideosUI extends StatelessWidget {
                   width: 150,
                   padding: EdgeInsets.all(5),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0), // Adjust the value for desired curvature
+                    borderRadius: BorderRadius.circular(
+                        8.0), // Adjust the value for desired curvature
                     child: Image.network(
                       video.thumbnailURL ?? "",
                     ),
@@ -83,7 +84,7 @@ class ContentCardData extends StatelessWidget {
   Widget build(BuildContext context) {
     var favoritesModel = Provider.of<FavoritesModel>(context);
     var searchResultModel = Provider.of<SearchResultModel>(context);
-    var playlistModel = Provider.of<PlaylistViewModel>(context);
+    // var playlistModel = Provider.of<PlaylistViewModel>(context);
 
     return Container(
       padding: EdgeInsets.all(size == 1 ? 20 : 10),
@@ -101,24 +102,25 @@ class ContentCardData extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text('Channel: ${video.channelTitle}', style: TextStyle(fontSize: size == 1 ? 12 : 10), maxLines: 1),
+              Text('Channel: ${video.channelTitle}',
+                  style: TextStyle(fontSize: size == 1 ? 12 : 10), maxLines: 1),
               Text(
                 video.publishTime ?? "",
                 style: TextStyle(fontSize: size == 1 ? 12 : 10),
               ),
               // if (size == 1) ...[
-                InkWell(
-                  onTap: () async {
-                    searchResultModel.openUrl(video.linkURL ?? "");
-                  },
-                  child: Text(
-                    video.typeFormatted,
-                    style: TextStyle(
-                      color: Color(0xFF1C96F9),
-                      decoration: TextDecoration.none,
-                    ),
+              InkWell(
+                onTap: () async {
+                  searchResultModel.openUrl(video.linkURL ?? "");
+                },
+                child: Text(
+                  video.typeFormatted,
+                  style: TextStyle(
+                    color: Color(0xFF1C96F9),
+                    decoration: TextDecoration.none,
                   ),
                 ),
+              ),
               // ],
             ],
           ),
@@ -130,12 +132,14 @@ class ContentCardData extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: IconButton(
               icon: Icon(
-                video.isSeen != null && video.isSeen! ? Icons.check_circle : Icons.check,
+                video.isSeen != null && video.isSeen!
+                    ? Icons.check_circle
+                    : Icons.check,
                 color: favoritesModel.contains(video) ? Colors.blue : null,
                 size: 30,
               ),
               onPressed: () {
-                playlistModel.videoDone(video);
+                //playlistModel.videoDone(video);
               },
             ),
           ),

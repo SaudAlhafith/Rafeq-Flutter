@@ -35,9 +35,9 @@ class SettingsPage extends StatelessWidget {
             // Example: Language preferences, App theme, Font size adjustments
             // Uncomment and customize these lines:
             ListTile(
-              title: Text('Language'),
+              title: Text("Language"),
               onTap: () {
-                // Add logic to change language
+                showLanguageDialog(context);
               },
             ),
             // ListTile(
@@ -137,20 +137,20 @@ class SettingsPage extends StatelessWidget {
             //   },
             // ),
 
-            SizedBox(height: 16),
-            Text(
-              'Notification Settings',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SwitchListTile(
-              title: Text('Receive Notifications'),
-              value:
-                  Provider.of<NotificationModel>(context).isNotificationEnabled,
-              onChanged: (bool value) {
-                Provider.of<NotificationModel>(context, listen: false)
-                    .setNotificationEnabled(value);
-              },
-            ),
+            // SizedBox(height: 16),
+            // Text(
+            //   'Notification Settings',
+            //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            // ),
+            // SwitchListTile(
+            //   title: Text('Receive Notifications'),
+            //   value:
+            //       Provider.of<NotificationModel>(context).isNotificationEnabled,
+            //   onChanged: (bool value) {
+            //     Provider.of<NotificationModel>(context, listen: false)
+            //         .setNotificationEnabled(value);
+            //   },
+            // ),
             // Add other notification settings
             // Example: Notification sound preferences, Vibration preferences, In-app notifications
             // Uncomment and customize these lines:
@@ -181,5 +181,47 @@ class SettingsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void showLanguageDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select Language'),
+          content: Column(
+            children: [
+              ListTile(
+                title: Text('English'),
+                onTap: () {
+                  Provider.of<LocaleProvider>(context, listen: false)
+                      .setLocale(Locale('en', 'US'));
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: Text('العربية'),
+                onTap: () {
+                  Provider.of<LocaleProvider>(context, listen: false)
+                      .setLocale(Locale('ar', 'AR'));
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class LocaleProvider extends ChangeNotifier {
+  late Locale _locale;
+
+  Locale get locale => _locale;
+
+  void setLocale(Locale locale) {
+    _locale = locale;
+    notifyListeners();
   }
 }

@@ -6,6 +6,7 @@ import 'package:rafeq_app/Views/Profile/EditProfileScreen.dart';
 import 'package:rafeq_app/generated/l10n.dart';
 // import 'package:rafeq_app/Views/Search/ContentCard.dart';
 import 'package:rafeq_app/services/AuthService.dart';
+import 'package:rafeq_app/Views/Settings/DarkThemeProvider.dart';
 
 // class UserProfile extends StatelessWidget {
 
@@ -243,6 +244,9 @@ Drawer _settingsDrawer(BuildContext context) {
           onTap: () {
             // Handle Dark Mode action
             Navigator.pop(context); // Close the drawer
+            // Toggle dark mode using a method in your DarkThemeProvider
+            Provider.of<DarkThemeProvider>(context, listen: false)
+                .toggleDarkMode();
           },
         ),
         // ... Add more options as needed

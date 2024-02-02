@@ -20,6 +20,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rafeq_app/Views/Settings/DarkThemeProvider.dart';
 import 'package:rafeq_app/Views/Settings/NotificationModel.dart';
+import 'generated/l10n.dart';
 
 Future<void> main() async {
   await Hive.initFlutter();
@@ -55,6 +56,9 @@ Future<void> main() async {
         ChangeNotifierProvider(
           create: (context) => NotificationModel(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => LocaleProvider(),
+        ),
         // You can add more providers as needed
       ],
       child: MyApp(),
@@ -62,11 +66,19 @@ Future<void> main() async {
   );
 }
 
+Future<void> init() async {
+  await Future.wait([
+    S.load(Locale('en', 'US')), // Load English localization
+    S.load(Locale('ar', 'AR')), // Load Arabic localization
+  ]);
+}
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var localeProvider = context.watch<LocaleProvider>();
     return MaterialApp(
-      locale: Locale('en'),
+      locale: localeProvider.locale,
       localizationsDelegates: [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -98,6 +110,7 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
+    var localizations = S.of(context);
 
     return StreamBuilder<User?>(
       stream: authService.user,
@@ -114,5 +127,16 @@ class Wrapper extends StatelessWidget {
         }
       },
     );
+  }
+}
+
+class LocaleProvider extends ChangeNotifier {
+  Locale _locale = Locale('en', 'US');
+
+  Locale get locale => _locale;
+
+  void setLocale(Locale newLocale) {
+    _locale = newLocale;
+    notifyListeners();
   }
 }

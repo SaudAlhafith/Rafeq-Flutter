@@ -14,12 +14,12 @@ class PlaylistDetailsScreen extends StatelessWidget {
     var playlistModel = Provider.of<PlaylistViewModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(playlist.title ?? "null"), // Assuming 'playlist' has a 'title' property
+        title: Text(playlist.title ??
+            "null"), // Assuming 'playlist' has a 'title' property
       ),
       body: SafeArea(
         minimum: EdgeInsets.all(20),
         child: Column(
-          
           children: <Widget>[
             const Text(
               "Course Videos",
@@ -27,9 +27,11 @@ class PlaylistDetailsScreen extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: playlistModel.playlistVideos.length, // Assuming 'playlist' has a list of videos
+                itemCount: playlistModel.playlistVideos
+                    .length, // Assuming 'playlist' has a list of videos
                 itemBuilder: (context, index) {
-                  return CourseVideosUI(video: playlistModel.playlistVideos[index]);
+                  return CourseVideosUI(
+                      video: playlistModel.playlistVideos[index]);
                 },
               ),
             ),

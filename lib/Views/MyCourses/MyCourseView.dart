@@ -24,7 +24,7 @@ class MyCourses extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const Text(
-              "Playlists",
+              "Courses",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Expanded(
@@ -66,37 +66,37 @@ class MyCourses extends StatelessWidget {
                 },
               ),
             ),
-            const Text(
-              "Videos",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: videos.length,
-                itemBuilder: (context, index) {
-                  final video = videos[index];
+            // const Text(
+            //   "Videos",
+            //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            // ),
+            // Expanded(
+            //   child: ListView.builder(
+            //     itemCount: videos.length,
+            //     itemBuilder: (context, index) {
+            //       final video = videos[index];
 
-                  return Dismissible(
-                    key: Key(video
-                        .id!), // Ensure you have a unique key for each item. 'id' should be unique.
-                    onDismissed: (direction) {
-                      // Remove the item from the list
-                      favoritesModel.remove(video);
-                      // You can also implement additional actions like showing a snackbar or updating backend data here.
-                    },
-                    background: Container(
-                      color: Colors.red,
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 20.0),
-                        child: Icon(Icons.delete, color: Colors.white),
-                      ),
-                    ),
-                    child: CourseVideosUI(video: video),
-                  );
-                },
-              ),
-            ),
+            //       return Dismissible(
+            //         key: Key(video
+            //             .id!), // Ensure you have a unique key for each item. 'id' should be unique.
+            //         onDismissed: (direction) {
+            //           // Remove the item from the list
+            //           favoritesModel.remove(video);
+            //           // You can also implement additional actions like showing a snackbar or updating backend data here.
+            //         },
+            //         background: Container(
+            //           color: Colors.red,
+            //           alignment: Alignment.centerRight,
+            //           child: Padding(
+            //             padding: EdgeInsets.only(right: 20.0),
+            //             child: Icon(Icons.delete, color: Colors.white),
+            //           ),
+            //         ),
+            //         child: CourseVideosUI(video: video),
+            //       );
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),

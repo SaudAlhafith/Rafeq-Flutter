@@ -11,7 +11,7 @@ class SearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var darkThemeProvider = Provider.of<DarkThemeProvider>(context);
+    // var darkThemeProvider = Provider.of<DarkThemeProvider>(context);
     var searchResultModel = Provider.of<SearchResultModel>(context);
     final searchCodeController =
         TextEditingController(text: searchResultModel.searchCode);
@@ -27,9 +27,6 @@ class SearchView extends StatelessWidget {
           child: Column(
         children: [
           Container(
-            color: darkThemeProvider.isDarkModeEnabled
-                ? Colors.black
-                : Colors.white,
             padding: const EdgeInsets.all(10.0),
             margin: const EdgeInsets.all(20.0),
             decoration: BoxDecoration(

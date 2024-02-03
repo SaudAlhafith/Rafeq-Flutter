@@ -4,32 +4,11 @@ import 'package:rafeq_app/DataModel/VideoCard.dart';
 import 'package:rafeq_app/Views/MyCourses/FavoritesModel.dart';
 import 'package:rafeq_app/Views/Profile/EditProfileScreen.dart';
 import 'package:rafeq_app/generated/l10n.dart';
-// import 'package:rafeq_app/Views/Search/ContentCard.dart';
 import 'package:rafeq_app/services/AuthService.dart';
 import 'package:rafeq_app/Views/Settings/DarkThemeProvider.dart';
-
-// class UserProfile extends StatelessWidget {
-
-//   @override
-//   Widget build(BuildContext context) {
-//     var authService = Provider.of<AuthService>(context);
-//     var user = Provider.of<User?>(context);
-
-//     return SafeArea(
-//       child: Column(
-//         children: [
-//           Text(user?.uid.toString() ?? "No User"),
-//           ElevatedButton(
-//             onPressed: () {
-//               authService.logout();
-//             },
-//             child: const Text('LogOut'),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+import 'package:rafeq_app/Views/Settings/settings_page.dart';
+import 'package:rafeq_app/Views/Settings/LanguageProvider.dart';
+import 'package:rafeq_app/Views/Settings/TranslationLoader.dart';
 
 class UserProfile extends StatelessWidget {
   @override
@@ -37,16 +16,18 @@ class UserProfile extends StatelessWidget {
     var authService = Provider.of<AuthService>(context);
     var currentUser = authService.currentUser;
     var favoritesModel = Provider.of<FavoritesModel>(context);
+    final darkThemeProvider = Provider.of<DarkThemeProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).profile),
-        backgroundColor: Colors.blue, // Example color for the app bar
+        backgroundColor: darkThemeProvider.isDarkModeEnabled
+            ? Color(0xff303030) // Change to the desired color for dark mode
+            : Colors.blue,
       ),
       drawer: _settingsDrawer(context),
       body: Stack(
         children: [
-          // Background image
           Positioned.fill(
             child: Image.asset(
               'AppFiles/Newbackground.jpg',
@@ -96,27 +77,25 @@ class UserProfile extends StatelessWidget {
                                   snapshot.data?['username'] ??
                                       S.of(context).usernameNotFound,
                                   style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blue),
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: darkThemeProvider.isDarkModeEnabled
+                                        ? Colors.grey
+                                        : Colors.blue,
+                                  ),
                                   textAlign: TextAlign.center,
                                 ),
-                                //  Text(
-                                //     currentUser.uid ?? 'Username not found',
-                                //     style: TextStyle(
-                                //         fontSize: 15,
-                                //         fontWeight: FontWeight.bold,
-                                //         color: Colors.blue),
-                                //     textAlign: TextAlign.center,
-                                //   ),
                                 Text(
                                   snapshot.data?['email'] ?? 'Email not found',
                                   style: TextStyle(
-                                      fontSize: 18, color: Colors.grey),
+                                    fontSize: 18,
+                                    color: darkThemeProvider.isDarkModeEnabled
+                                        ? Colors.grey
+                                        : Colors.grey,
+                                  ),
                                   textAlign: TextAlign.center,
                                 ),
                                 SizedBox(height: 30),
-                                // ... Remaining UI elements
                               ],
                             );
                           }
@@ -125,62 +104,66 @@ class UserProfile extends StatelessWidget {
                       ),
                   ],
                 ),
-
                 const SizedBox(height: 30),
                 Text(
                   S.of(context).achievements,
                   style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: darkThemeProvider.isDarkModeEnabled
+                        ? Colors.grey
+                        : Colors.blue,
+                  ),
                 ),
                 Container(
-                  height: 100, // Set a fixed height for the row
+                  decoration: BoxDecoration(
+                    color: darkThemeProvider.isDarkModeEnabled
+                        ? Color(0xff303030)
+                        : Colors.blue,
+                  ),
+                  // other properties...
+                ),
+                Container(
+                  height: 100,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: [
-                      // Gold cup for watching 10 courses
                       AchievementIcon(
                         iconData: Icons.emoji_events,
                         color: Colors.amber,
                         label: S.of(context).tenCourses,
                       ),
-                      // Silver cup for watching 5 courses
                       AchievementIcon(
                         iconData: Icons.emoji_events,
                         color: Colors.grey,
                         label: S.of(context).fiveCourses,
                       ),
-                      // Bronze cup for watching 3 courses
                       AchievementIcon(
                         iconData: Icons.emoji_events,
                         color: Colors.brown,
                         label: S.of(context).threeCourses,
                       ),
-                      // Add more achievements as needed
                     ],
                   ),
                 ),
-                // Horizontal list of achievements
-                // ... Achievement list code
                 const SizedBox(height: 30),
                 Text(
                   S.of(context).finishedCourses,
                   style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue),
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: darkThemeProvider.isDarkModeEnabled
+                        ? Colors.grey
+                        : Colors.blue,
+                  ),
                 ),
-                // The GridView.builder to display courses in a grid of 3 columns
                 GridView.builder(
-                  physics:
-                      const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
-                  shrinkWrap:
-                      true, // Use this to make GridView take the space of its children
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3, // Number of columns
-                    crossAxisSpacing: 4, // Horizontal space between items
-                    mainAxisSpacing: 4, // Vertical space between items
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 4,
+                    mainAxisSpacing: 4,
                   ),
                   itemCount: favoritesModel.favorites.length,
                   itemBuilder: (context, index) {
@@ -188,13 +171,6 @@ class UserProfile extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 30),
-                // Text(currentUser?.uid.toString() ?? "No User"),
-                ElevatedButton(
-                  onPressed: () {
-                    authService.logout();
-                  },
-                  child: Text(S.of(context).logout),
-                ),
               ],
             ),
           ),
@@ -204,24 +180,35 @@ class UserProfile extends StatelessWidget {
   }
 }
 
-void _openSettings(BuildContext context) {
-  Scaffold.of(context).openDrawer();
-}
-
 Drawer _settingsDrawer(BuildContext context) {
+  var darkThemeProvider = Provider.of<DarkThemeProvider>(context);
+  var languageProvider = context.watch<LanguageProvider>();
   return Drawer(
     child: ListView(
       children: <Widget>[
-        DrawerHeader(
-          child: Text(S.of(context).settings,
-              style: TextStyle(color: Colors.white, fontSize: 24)),
-          decoration: BoxDecoration(color: Colors.blue),
+        Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: darkThemeProvider.isDarkModeEnabled
+                ? Color(0xff303030) // Change to the desired color for dark mode
+                : Colors.blue,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                S.of(context).settings,
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+              // Add a switch or any other widgets you want in the header
+            ],
+          ),
         ),
         ListTile(
           leading: Icon(Icons.edit),
           title: Text(S.of(context).editProfile),
           onTap: () async {
-            Navigator.pop(context); // Close the drawer
+            Navigator.pop(context);
             var authService = Provider.of<AuthService>(context, listen: false);
             var currentUser = authService.currentUser;
 
@@ -230,8 +217,7 @@ Drawer _settingsDrawer(BuildContext context) {
                   await authService.fetchUserProfile(currentUser.uid);
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => EditProfileScreen(
-                  initialUsername: userProfile?[
-                      'username'], // Get username from the user profile
+                  initialUsername: userProfile?['username'],
                   initialEmail: currentUser.email,
                 ),
               ));
@@ -242,20 +228,68 @@ Drawer _settingsDrawer(BuildContext context) {
           leading: Icon(Icons.dark_mode),
           title: Text(S.of(context).darkMode),
           onTap: () {
-            // Handle Dark Mode action
-            Navigator.pop(context); // Close the drawer
-            // Toggle dark mode using a method in your DarkThemeProvider
+            Navigator.pop(context);
             Provider.of<DarkThemeProvider>(context, listen: false)
                 .toggleDarkMode();
           },
         ),
-        // ... Add more options as needed
+        ListTile(
+          leading: Icon(Icons.language), // Add your desired icon
+          title: Text(
+            languageProvider.translate("language"),
+            style: TextStyle(fontSize: 16), // Adjust the font size if needed
+          ),
+          onTap: () {
+            showLanguageDialog(context, languageProvider);
+          },
+          // Add your desired trailing arrow icon
+        ),
+        ListTile(
+          leading: Icon(Icons.settings),
+          title: Text('Account Settings'),
+          onTap: () {
+            Navigator.pop(context);
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => SettingsPage(),
+            ));
+          },
+        ),
+        // ... Other list tiles for different options
       ],
     ),
   );
 }
 
-// ... AchievementIcon class
+void showLanguageDialog(
+    BuildContext context, LanguageProvider languageProvider) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(languageProvider.translate('language')),
+        content: Column(
+          children: [
+            ListTile(
+              title: Text(languageProvider.translate('English')),
+              onTap: () {
+                languageProvider.setLocale(Locale('en', 'US'));
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text(languageProvider.translate('Arabic')),
+              onTap: () {
+                languageProvider.setLocale(Locale('ar', 'AR'));
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
 class AchievementIcon extends StatelessWidget {
   final IconData iconData;
   final Color color;
@@ -271,7 +305,7 @@ class AchievementIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 80, // Fixed width for each achievement icon
+      width: 80,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -301,23 +335,22 @@ class ContentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final darkThemeProvider = Provider.of<DarkThemeProvider>(context);
     return Card(
       color: Colors.grey.shade50,
-      elevation: 5, // Add some elevation for shadow
+      elevation: 5,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10), // Rounded corners
+        borderRadius: BorderRadius.circular(10),
       ),
       child: ClipRRect(
-        borderRadius:
-            BorderRadius.circular(10), // Clip the image with rounded corners
+        borderRadius: BorderRadius.circular(10),
         child: Column(
           children: [
             Expanded(
               child: Image.network(
                 video.thumbnailURL ?? "",
                 fit: BoxFit.cover,
-                width: double
-                    .infinity, // Make image take the full width of the card
+                width: double.infinity,
               ),
             ),
             Padding(
@@ -326,14 +359,24 @@ class ContentCard extends StatelessWidget {
                 children: [
                   Text(
                     video.title ?? "",
-                    style: const TextStyle(
-                        fontSize: 12, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: darkThemeProvider.isDarkModeEnabled
+                          ? Colors.grey
+                          : Colors.black,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     video.channelTitle ?? "",
-                    style: const TextStyle(fontSize: 10, color: Colors.grey),
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: darkThemeProvider.isDarkModeEnabled
+                          ? Colors.grey
+                          : Colors.grey,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

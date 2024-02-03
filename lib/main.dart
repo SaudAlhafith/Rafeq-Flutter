@@ -21,6 +21,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:rafeq_app/Views/Settings/DarkThemeProvider.dart';
 import 'package:rafeq_app/Views/Settings/NotificationModel.dart';
 import 'generated/l10n.dart';
+import 'package:rafeq_app/Views/Settings/LanguageProvider.dart';
+import 'package:rafeq_app/Views/Settings/TranslationLoader.dart';
 
 Future<void> main() async {
   await Hive.initFlutter();
@@ -30,6 +32,8 @@ Future<void> main() async {
   );
 
   await Hive.initFlutter();
+
+  await init();
 
   runApp(
     MultiProvider(
@@ -58,6 +62,9 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => LocaleProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LanguageProvider(TranslationLoader()),
         ),
         // You can add more providers as needed
       ],

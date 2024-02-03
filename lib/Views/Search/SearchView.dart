@@ -11,7 +11,7 @@ class SearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // var darkThemeProvider = Provider.of<DarkThemeProvider>(context);
+    var darkThemeProvider = Provider.of<DarkThemeProvider>(context);
     var searchResultModel = Provider.of<SearchResultModel>(context);
     final searchCodeController =
         TextEditingController(text: searchResultModel.searchCode);
@@ -24,138 +24,143 @@ class SearchView extends StatelessWidget {
 
     return Scaffold(
       body: SafeArea(
-          child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10.0),
-            margin: const EdgeInsets.all(20.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  spreadRadius: 4,
-                  blurRadius: 8,
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        searchResultModel.toggleTextContext();
-                      },
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                        padding: const EdgeInsets.all(10.0),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
-                          searchResultModel.textContent,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 12),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: TextField(
-                        controller: searchCourseController,
-                        textAlign: TextAlign.right,
-                        decoration: InputDecoration(
-                          hintText: localizations.searchMaterialName,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          contentPadding: EdgeInsets.all(10),
-                        ),
-                      ),
-                    ),
-                    // SizedBox(width: 10),
-                    // Expanded(
-                    //   child: TextField(
-                    //     controller: searchCodeController,
-                    //     textAlign: TextAlign.right,
-                    //     decoration: InputDecoration(
-                    //       hintText: 'رمز المقرر',
-                    //       border: OutlineInputBorder(
-                    //         borderRadius: BorderRadius.circular(5),
-                    //       ),
-                    //       contentPadding: EdgeInsets.all(10),
-                    //     ),
-                    //   ),
-                    // ),
-                  ],
-                ),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        searchResultModel.changeSearchQuery(
-                          newSearchCode: searchCodeController.text,
-                          newSearchCourse: searchCourseController.text,
-                          newSearchLesson: searchLessonController.text,
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF1C96F9),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                      child: Text('بحث'),
-                    ),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: TextField(
-                        controller: searchLessonController,
-                        textAlign: TextAlign.right,
-                        decoration: InputDecoration(
-                          hintText: localizations.searchButton,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          contentPadding: EdgeInsets.all(10),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10),
-                if (searchResultModel.isShowingWarning) ...[
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10.0),
+              margin: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: darkThemeProvider.isDarkModeEnabled
+                    ? Colors.black
+                    : Colors.white,
+                borderRadius: BorderRadius.circular(5),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 4,
+                    blurRadius: 8,
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        searchResultModel.warningMessage,
-                        style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.red.withOpacity(0.8),
-                            fontWeight: FontWeight.bold),
+                      GestureDetector(
+                        onTap: () {
+                          searchResultModel.toggleTextContext();
+                        },
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          padding: const EdgeInsets.all(10.0),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            searchResultModel.textContent,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: darkThemeProvider.isDarkModeEnabled
+                                  ? Colors.grey
+                                  : Colors.black,
+                            ),
+                          ),
+                        ),
                       ),
-                      SizedBox(width: 5),
-                      Icon(Icons.warning,
-                          size: 12, color: Colors.red.withOpacity(0.8)),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: TextField(
+                          controller: searchCourseController,
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            color: darkThemeProvider.isDarkModeEnabled
+                                ? Colors.grey
+                                : Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: localizations.searchMaterialName,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            contentPadding: EdgeInsets.all(10),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                ]
-              ],
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          searchResultModel.changeSearchQuery(
+                            newSearchCode: searchCodeController.text,
+                            newSearchCourse: searchCourseController.text,
+                            newSearchLesson: searchLessonController.text,
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF1C96F9),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        child: Text('Search'),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: TextField(
+                          controller: searchLessonController,
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            color: darkThemeProvider.isDarkModeEnabled
+                                ? Colors.grey
+                                : Colors.black,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: localizations.searchButton,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            contentPadding: EdgeInsets.all(10),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  if (searchResultModel.isShowingWarning) ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          searchResultModel.warningMessage,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.red.withOpacity(0.8),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Icon(Icons.warning,
+                            size: 12, color: Colors.red.withOpacity(0.8)),
+                      ],
+                    ),
+                  ]
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: SearchResultWidget(searchResultModel: searchResultModel),
-          ),
-        ],
-      )),
+            Expanded(
+              child: SearchResultWidget(searchResultModel: searchResultModel),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

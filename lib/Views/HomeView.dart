@@ -5,8 +5,8 @@ import 'package:rafeq_app/Views/RAFEQGPT/RafeqGPT.dart';
 import 'package:rafeq_app/Views/Settings/settings.dart';
 import 'package:rafeq_app/Views/Settings/settings_page.dart';
 import 'package:rafeq_app/Views/Search/SearchView.dart';
-import 'package:rafeq_app/l10n/intl_ar.arb';
-import 'package:rafeq_app/l10n/intl_en.arb';
+// import 'package:rafeq_app/l10n/intl_ar.arb';
+// import 'package:rafeq_app/l10n/intl_en.arb';
 
 import '../generated/l10n.dart';
 
@@ -78,13 +78,13 @@ class _HomeViewState extends State<HomeView> {
               color: Colors.grey,
             ),
           ),
-          BottomNavigationBarItem(
-            label: localizations.settings,
-            icon: Icon(
-              Icons.settings,
-              color: Colors.grey,
-            ),
-          ),
+          // BottomNavigationBarItem(
+          //   label: localizations.settings,
+          //   icon: Icon(
+          //     Icons.settings,
+          //     color: Colors.grey,
+          //   ),
+          // ),
         ],
       ),
     );

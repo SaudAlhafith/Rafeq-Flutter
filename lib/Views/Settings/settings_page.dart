@@ -1,45 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rafeq_app/generated/l10n.dart';
 import 'ChangePasswordScreen.dart';
 import 'package:rafeq_app/services/AuthService.dart';
 import 'DarkThemeProvider.dart';
 import 'NotificationModel.dart';
+import 'package:rafeq_app/Views/Settings/LanguageProvider.dart';
 
 class SettingsPage extends StatelessWidget {
   final AuthService authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
+    var languageProvider = context.watch<LanguageProvider>();
     return Scaffold(
       appBar: AppBar(
-        title: Text('App Settings'),
+        title: Text('Account Settings'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'General Settings',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            SwitchListTile(
-              title: Text('Dark Mode'),
-              value: Provider.of<DarkThemeProvider>(context).isDarkModeEnabled,
-              onChanged: (bool value) {
-                Provider.of<DarkThemeProvider>(context, listen: false)
-                    .toggleDarkMode();
-              },
-            ),
+            // Text(
+            //   'General Settings',
+            //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            // ),
+            // SwitchListTile(
+            //   title: Text('Dark Mode'),
+            //   value: Provider.of<DarkThemeProvider>(context).isDarkModeEnabled,
+            //   onChanged: (bool value) {
+            //     Provider.of<DarkThemeProvider>(context, listen: false)
+            //         .toggleDarkMode();
+            //   },
+            // ),
             // Add other general settings
             // Example: Language preferences, App theme, Font size adjustments
             // Uncomment and customize these lines:
-            ListTile(
-              title: Text("Language"),
-              onTap: () {
-                showLanguageDialog(context);
-              },
-            ),
+            // ListTile(
+            //   title: Text(languageProvider.translate("language")),
+            //   onTap: () {
+            //     showLanguageDialog(context, languageProvider);
+            //   },
+            // ),
             // ListTile(
             //   title: Text('App Theme'),
             //   onTap: () {
@@ -53,11 +56,11 @@ class SettingsPage extends StatelessWidget {
             //   },
             // ),
 
-            SizedBox(height: 16),
-            Text(
-              'Account Settings',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+            // SizedBox(height: 16),
+            // Text(
+            //   'Account Settings',
+            //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            // ),
             ListTile(
               title: Text('Change Password'),
               onTap: () {
@@ -183,27 +186,26 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  void showLanguageDialog(BuildContext context) {
+  void showLanguageDialog(
+      BuildContext context, LanguageProvider languageProvider) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Select Language'),
+          title: Text(languageProvider.translate('language')),
           content: Column(
             children: [
               ListTile(
-                title: Text('English'),
+                title: Text(languageProvider.translate('english')),
                 onTap: () {
-                  Provider.of<LocaleProvider>(context, listen: false)
-                      .setLocale(Locale('en', 'US'));
+                  languageProvider.setLocale(Locale('en', 'US'));
                   Navigator.pop(context);
                 },
               ),
               ListTile(
-                title: Text('العربية'),
+                title: Text(languageProvider.translate('arabic')),
                 onTap: () {
-                  Provider.of<LocaleProvider>(context, listen: false)
-                      .setLocale(Locale('ar', 'AR'));
+                  languageProvider.setLocale(Locale('ar', 'AR'));
                   Navigator.pop(context);
                 },
               ),
@@ -212,16 +214,5 @@ class SettingsPage extends StatelessWidget {
         );
       },
     );
-  }
-}
-
-class LocaleProvider extends ChangeNotifier {
-  late Locale _locale;
-
-  Locale get locale => _locale;
-
-  void setLocale(Locale locale) {
-    _locale = locale;
-    notifyListeners();
   }
 }

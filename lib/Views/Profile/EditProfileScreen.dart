@@ -123,17 +123,17 @@ class EditProfileScreen extends StatelessWidget {
                 hintText: S.of(context).cannotEditEmail,
               ),
             ),
-            TextFormField(
-              controller: _newPasswordController,
-              decoration: InputDecoration(labelText: S.of(context).NewPassword),
-              obscureText: true,
-            ),
-            TextFormField(
-              controller: _confirmPasswordController,
-              decoration:
-                  InputDecoration(labelText: S.of(context).confirmNewPassword),
-              obscureText: true,
-            ),
+            // TextFormField(
+            //   controller: _newPasswordController,
+            //   decoration: InputDecoration(labelText: S.of(context).NewPassword),
+            //   obscureText: true,
+            // ),
+            // TextFormField(
+            //   controller: _confirmPasswordController,
+            //   decoration:
+            //       InputDecoration(labelText: S.of(context).confirmNewPassword),
+            //   obscureText: true,
+            // ),
             ElevatedButton(
               onPressed: () => _updateProfileAndPassword(context),
               child: Text(S.of(context).updateProfile),

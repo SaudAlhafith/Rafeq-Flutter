@@ -25,15 +25,18 @@ class UserProfile extends StatelessWidget {
             ? Color(0xff303030) // Change to the desired color for dark mode
             : Colors.blue,
       ),
+      backgroundColor: darkThemeProvider.isDarkModeEnabled
+            ? Color(0xff303030) // Change to the desired color for dark mode
+            : Colors.white,
       drawer: _settingsDrawer(context),
       body: Stack(
         children: [
-          Positioned.fill(
-            child: Image.asset(
-              'AppFiles/Newbackground.jpg',
-              fit: BoxFit.cover,
-            ),
-          ),
+          // Positioned.fill(
+          //   child: Image.asset(
+          //     'AppFiles/Newbackground.jpg',
+          //     fit: BoxFit.cover,
+          //   ),
+          // ),
           SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(

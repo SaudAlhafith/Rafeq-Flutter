@@ -4,6 +4,7 @@ import 'package:rafeq_app/DataModel/VideoCard.dart';
 import 'package:rafeq_app/Views/MyCourses/FavoritesModel.dart';
 import 'package:rafeq_app/Views/MyCourses/PlaylistCourses/PlaylistViewModel.dart';
 import 'package:rafeq_app/Views/Search/SearchResultModel.dart';
+import 'package:rafeq_app/Views/Settings/DarkThemeProvider.dart';
 
 class CourseVideosUI extends StatelessWidget {
   final VideoCard video;
@@ -12,12 +13,15 @@ class CourseVideosUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final darkThemeProvider = Provider.of<DarkThemeProvider>(context);
     var playlistModel = Provider.of<PlaylistViewModel>(context);
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       height: 110,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: darkThemeProvider.isDarkModeEnabled
+                    ? Color(0xff303030)
+                    : Colors.white,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(

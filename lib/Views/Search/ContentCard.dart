@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:rafeq_app/DataModel/VideoCard.dart';
 import 'package:rafeq_app/Views/MyCourses/FavoritesModel.dart';
 import 'package:rafeq_app/Views/Search/SearchResultModel.dart';
+import 'package:rafeq_app/Views/Settings/DarkThemeProvider.dart';
 
 class ContentCard extends StatelessWidget {
   final VideoCard video;
@@ -11,11 +12,12 @@ class ContentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final darkThemeProvider = Provider.of<DarkThemeProvider>(context);
     return Container(
       margin: const EdgeInsets.all(20),
       height: 330,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: darkThemeProvider.isDarkModeEnabled ? Color(0xff303030) : Colors.white,
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
@@ -79,17 +81,16 @@ class ContentCardData extends StatelessWidget {
     var searchResultModel = Provider.of<SearchResultModel>(context);
 
     double calculateProgress(VideoCard video) {
+      // Safely parse the string to int, default to 0 if null or not a valid integer
+      int total = int.tryParse(video.totalVideos ?? "") ?? 0;
+      int completed = int.tryParse(video.completedVideos ?? "") ?? 0;
 
-  // Safely parse the string to int, default to 0 if null or not a valid integer
-  int total = int.tryParse(video.totalVideos ?? "") ?? 0;
-  int completed = int.tryParse(video.completedVideos ?? "") ?? 0;
+      if (total == 0) {
+        return 0; // Avoid division by zero
+      }
 
-  if (total == 0) {
-    return 0; // Avoid division by zero
-  }
-
-  return completed / total;
-}
+      return completed / total;
+    }
 
     return Container(
       padding: EdgeInsets.symmetric(vertical: size == 1 ? 20 : 10, horizontal: size == 1 ? 20 : 10),

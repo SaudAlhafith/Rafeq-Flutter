@@ -54,6 +54,7 @@ class _RafeqGPTState extends State<RafeqGPT> {
 
   @override
   Widget build(BuildContext context) {
+    final darkThemeProvider = Provider.of<DarkThemeProvider>(context);
     var localizations = S.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -72,8 +73,10 @@ class _RafeqGPTState extends State<RafeqGPT> {
                     : EdgeInsets.only(left: 40, right: 10, bottom: 20),
                 decoration: BoxDecoration(
                   color: _messages[index].contains("RafeqGPT")
-                      ? Colors.blue[200]
-                      : Colors.grey[300],
+                      ? const Color.fromARGB(255, 49, 154, 241)
+                      : (darkThemeProvider.isDarkModeEnabled
+            ? Color(0xff303030) // Change to the desired color for dark mode
+            : Colors.grey[300]),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 alignment: _messages[index].contains("RafeqGPT")

@@ -14,15 +14,22 @@ class AuthService {
   final auth.FirebaseAuth _firebaseAuth = auth.FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-
   Future<void> updateUserProfile(
-      String uid, String username, String? email) async {
-    await _firestore.collection('users').doc(uid).update({
+    String uid,
+    String username,
+    String? email, {
+    String? bio, // Add this optional parameter for the bio
+  }) async {
+    Map<String, dynamic> updateData = {
       'username': username,
-      // Update the email if necessary
       'email': email,
-      // Do not include the password here
-    });
+    };
+
+    if (bio != null) {
+      updateData['bio'] = bio;
+    }
+
+    await _firestore.collection('users').doc(uid).update(updateData);
   }
 
   User? _userFromFirebase(auth.User? user) {

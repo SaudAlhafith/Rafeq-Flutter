@@ -26,8 +26,8 @@ class UserProfile extends StatelessWidget {
             : Colors.blue,
       ),
       backgroundColor: darkThemeProvider.isDarkModeEnabled
-            ? Color(0xff303030) // Change to the desired color for dark mode
-            : Colors.white,
+          ? Color(0xff303030) // Change to the desired color for dark mode
+          : Colors.white,
       drawer: _settingsDrawer(context),
       body: Stack(
         children: [
@@ -88,10 +88,22 @@ class UserProfile extends StatelessWidget {
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
+                                // Text(
+                                //   snapshot.data?['email'] ?? 'Email not found',
+                                //   style: TextStyle(
+                                //     fontSize: 18,
+                                //     color: darkThemeProvider.isDarkModeEnabled
+                                //         ? Colors.grey
+                                //         : Colors.grey,
+                                //   ),
+                                //   textAlign: TextAlign.center,
+                                // ),
+                                ListTile(),
                                 Text(
-                                  snapshot.data?['email'] ?? 'Email not found',
+                                  snapshot.data?['bio'] ??
+                                      '', // Display the bio
                                   style: TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 20,
                                     color: darkThemeProvider.isDarkModeEnabled
                                         ? Colors.grey
                                         : Colors.grey,
@@ -222,6 +234,7 @@ Drawer _settingsDrawer(BuildContext context) {
                 builder: (context) => EditProfileScreen(
                   initialUsername: userProfile?['username'],
                   initialEmail: currentUser.email,
+                  initialBio: userProfile?['bio'] ?? "",
                 ),
               ));
             }
@@ -236,17 +249,17 @@ Drawer _settingsDrawer(BuildContext context) {
                 .toggleDarkMode();
           },
         ),
-        ListTile(
-          leading: Icon(Icons.language), // Add your desired icon
-          title: Text(
-            languageProvider.translate("language"),
-            style: TextStyle(fontSize: 16), // Adjust the font size if needed
-          ),
-          onTap: () {
-            showLanguageDialog(context, languageProvider);
-          },
-          // Add your desired trailing arrow icon
-        ),
+        // ListTile(
+        //   leading: Icon(Icons.language), // Add your desired icon
+        //   title: Text(
+        //     languageProvider.translate("language"),
+        //     style: TextStyle(fontSize: 16), // Adjust the font size if needed
+        //   ),
+        //   onTap: () {
+        //     showLanguageDialog(context, languageProvider);
+        //   },
+        //   // Add your desired trailing arrow icon
+        // ),
         ListTile(
           leading: Icon(Icons.settings),
           title: Text('Account Settings'),

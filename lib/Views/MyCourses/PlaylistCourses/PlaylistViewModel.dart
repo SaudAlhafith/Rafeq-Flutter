@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:rafeq_app/DataModel/VideoCard.dart';
 import 'package:rafeq_app/Views/Search/SearchModels/SearchYoutubeQuerying.dart';
 import 'package:rafeq_app/services/AuthService.dart';
+import 'package:rafeq_app/Views/Settings/LanguageProvider.dart';
 
 class PlaylistViewModel extends ChangeNotifier {
   late final CollectionReference _playlistVideosCollection;
@@ -10,10 +11,11 @@ class PlaylistViewModel extends ChangeNotifier {
   List<VideoCard> get playlistVideos => _playlistVideos;
   final String userId;
   final VideoCard playlist; // Add a field for playlistId
+  final LanguageProvider languageProvider;
 
   SearchYoutubeQuerying youtubeQuerying = SearchYoutubeQuerying();
 
-  PlaylistViewModel(this.playlist)
+  PlaylistViewModel(this.playlist, this.languageProvider)
       : userId = AuthService().currentUser?.uid ?? '' {
     _playlistVideosCollection = FirebaseFirestore.instance
         .collection('users')

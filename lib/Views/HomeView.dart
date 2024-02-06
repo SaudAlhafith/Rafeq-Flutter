@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rafeq_app/Views/MyCourses/MyCourseView.dart';
 import 'package:rafeq_app/Views/Profile/UserProfile.dart';
 import 'package:rafeq_app/Views/RAFEQGPT/RafeqGPT.dart';
 import 'package:rafeq_app/Views/Settings/settings.dart';
 import 'package:rafeq_app/Views/Settings/settings_page.dart';
 import 'package:rafeq_app/Views/Search/SearchView.dart';
-// import 'package:rafeq_app/l10n/intl_ar.arb';
-// import 'package:rafeq_app/l10n/intl_en.arb';
-
 import '../generated/l10n.dart';
+import 'package:rafeq_app/Views/Settings/LanguageProvider.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -29,7 +28,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    var localizations = S.of(context);
+    var languageProvider = Provider.of<LanguageProvider>(context);
     return Scaffold(
       body: Column(
         children: [
@@ -51,35 +50,35 @@ class _HomeViewState extends State<HomeView> {
         },
         items: [
           BottomNavigationBarItem(
-            label: localizations.profile,
+            label: languageProvider.translate('profile'),
             icon: Icon(
               Icons.person,
               color: Colors.grey,
             ),
           ),
           BottomNavigationBarItem(
-            label: localizations.search,
+            label: languageProvider.translate('search'),
             icon: Icon(
               Icons.search,
               color: Colors.grey,
             ),
           ),
           BottomNavigationBarItem(
-            label: localizations.rafeeqGPT,
+            label: languageProvider.translate('rafeeqGPT'),
             icon: Icon(
               Icons.computer,
               color: Colors.grey,
             ),
           ),
           BottomNavigationBarItem(
-            label: localizations.myCourses,
+            label: languageProvider.translate('myCourses'),
             icon: Icon(
               Icons.book,
               color: Colors.grey,
             ),
           ),
           // BottomNavigationBarItem(
-          //   label: localizations.settings,
+          //   label: languageProvider.translate('settings'),
           //   icon: Icon(
           //     Icons.settings,
           //     color: Colors.grey,

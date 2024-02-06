@@ -2,10 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-import '../../generated/l10n.dart';
 import 'package:provider/provider.dart';
 import 'package:rafeq_app/Views/Settings/DarkThemeProvider.dart';
+import 'package:rafeq_app/Views/Settings/LanguageProvider.dart';
 
 class RafeqGPT extends StatefulWidget {
   @override
@@ -16,7 +15,7 @@ class _RafeqGPTState extends State<RafeqGPT> {
   final TextEditingController _textController = TextEditingController();
   List<String> _messages = ["RafeqGPT: " + "hi user ", "You: " + "hi  ai"];
 
-  void _sendMessage(String text) async {
+  void _sendMessage(String text, LanguageProvider languageProvider) async {
     if (text.isNotEmpty) {
       setState(() {
         _messages.add("You: $text");
@@ -55,10 +54,10 @@ class _RafeqGPTState extends State<RafeqGPT> {
   @override
   Widget build(BuildContext context) {
     final darkThemeProvider = Provider.of<DarkThemeProvider>(context);
-    var localizations = S.of(context);
+    var languageProvider = Provider.of<LanguageProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(localizations.RafeeqChatGPT),
+        title: Text(languageProvider.translate('RafeeqChatGPT')),
       ),
       body: Column(
         children: [
@@ -75,14 +74,15 @@ class _RafeqGPTState extends State<RafeqGPT> {
                   color: _messages[index].contains("RafeqGPT")
                       ? const Color.fromARGB(255, 49, 154, 241)
                       : (darkThemeProvider.isDarkModeEnabled
-            ? Color(0xff303030) // Change to the desired color for dark mode
-            : Colors.grey[300]),
+                          ? Colors.grey[
+                              300] // Change to the desired color for dark mode
+                          : Colors.grey[300]),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 alignment: _messages[index].contains("RafeqGPT")
                     ? Alignment.centerLeft
                     : Alignment.centerRight,
-                child: Text(_messages[index]),
+                child: Text(languageProvider.translate(_messages[index])),
               ),
             ),
           ),
@@ -93,19 +93,20 @@ class _RafeqGPTState extends State<RafeqGPT> {
                 Expanded(
                   child: TextField(
                     controller: _textController,
-                    onSubmitted: _sendMessage,
+                    onSubmitted: (text) => _sendMessage(text, languageProvider),
                     decoration: InputDecoration(
-                      labelText: 'Send a message',
+                      labelText: languageProvider.translate('Send a message'),
                       border: OutlineInputBorder(),
                     ),
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   ),
                 ),
                 IconButton(
                   icon: Icon(Icons.send),
-                  onPressed: () => _sendMessage(_textController.text),
+                  onPressed: () =>
+                      _sendMessage(_textController.text, languageProvider),
                 ),
               ],
             ),

@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:rafeq_app/Views/Search/ContentCard.dart';
 import 'package:rafeq_app/Views/Search/SearchResultModel.dart';
 import 'package:rafeq_app/Views/Settings/DarkThemeProvider.dart';
-
 import '../../generated/l10n.dart';
+import 'package:rafeq_app/Views/Settings/LanguageProvider.dart';
 
 class SearchView extends StatelessWidget {
   SearchView({super.key});
@@ -20,6 +20,7 @@ class SearchView extends StatelessWidget {
     final searchLessonController =
         TextEditingController(text: searchResultModel.searchLesson);
 
+    var languageProvider = Provider.of<LanguageProvider>(context);
     var localizations = S.of(context);
 
     return Scaffold(
@@ -82,7 +83,8 @@ class SearchView extends StatelessWidget {
                                 : Colors.black,
                           ),
                           decoration: InputDecoration(
-                            hintText: localizations.searchMaterialName,
+                            hintText: languageProvider
+                                .translate("searchMaterialName"),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),
@@ -110,7 +112,7 @@ class SearchView extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5),
                           ),
                         ),
-                        child: Text('Search'),
+                        child: Text(languageProvider.translate("search")),
                       ),
                       SizedBox(width: 10),
                       Expanded(
@@ -123,7 +125,8 @@ class SearchView extends StatelessWidget {
                                 : Colors.black,
                           ),
                           decoration: InputDecoration(
-                            hintText: localizations.searchButton,
+                            hintText:
+                                languageProvider.translate("searchButton"),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5),
                             ),

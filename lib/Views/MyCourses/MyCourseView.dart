@@ -5,11 +5,13 @@ import 'package:rafeq_app/Views/MyCourses/FavoritesModel.dart';
 import 'package:rafeq_app/Views/MyCourses/CoursesInFavorites.dart';
 import 'package:rafeq_app/Views/MyCourses/PlaylistCourses/PlaylistDetailsScreen.dart';
 import 'package:rafeq_app/Views/MyCourses/PlaylistCourses/PlaylistViewModel.dart';
+import 'package:rafeq_app/Views/Settings/LanguageProvider.dart';
 
 class MyCourses extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var favoritesModel = Provider.of<FavoritesModel>(context);
+    var languageProvider = Provider.of<LanguageProvider>(context);
 
     // Assuming each favorite has a 'type' property which can be 'playlist' or 'video'
     var playlists =
@@ -23,8 +25,8 @@ class MyCourses extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Text(
-              "Courses",
+            Text(
+              languageProvider.translate("Courses"),
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Expanded(
@@ -52,7 +54,8 @@ class MyCourses extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => ChangeNotifierProvider(
-                              create: (context) => PlaylistViewModel(playlist),
+                              create: (context) =>
+                                  PlaylistViewModel(playlist, languageProvider),
                               child: PlaylistDetailsScreen(
                                 playlist: playlist,
                               ),
@@ -66,8 +69,8 @@ class MyCourses extends StatelessWidget {
                 },
               ),
             ),
-            // const Text(
-            //   "Videos",
+            // Text(
+            //   languageProvider.translate("Videos"),
             //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             // ),
             // Expanded(

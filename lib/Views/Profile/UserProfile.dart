@@ -17,10 +17,11 @@ class UserProfile extends StatelessWidget {
     var currentUser = authService.currentUser;
     var favoritesModel = Provider.of<FavoritesModel>(context);
     final darkThemeProvider = Provider.of<DarkThemeProvider>(context);
+    var languageProvider = Provider.of<LanguageProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).profile),
+        title: Text(languageProvider.translate('profile')),
         backgroundColor: darkThemeProvider.isDarkModeEnabled
             ? Color(0xff303030) // Change to the desired color for dark mode
             : Colors.blue,
@@ -28,15 +29,9 @@ class UserProfile extends StatelessWidget {
       backgroundColor: darkThemeProvider.isDarkModeEnabled
           ? Color(0xff303030) // Change to the desired color for dark mode
           : Colors.white,
-      drawer: _settingsDrawer(context),
+      drawer: _settingsDrawer(context, languageProvider),
       body: Stack(
         children: [
-          // Positioned.fill(
-          //   child: Image.asset(
-          //     'AppFiles/Newbackground.jpg',
-          //     fit: BoxFit.cover,
-          //   ),
-          // ),
           SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Column(
@@ -78,7 +73,8 @@ class UserProfile extends StatelessWidget {
                               children: [
                                 Text(
                                   snapshot.data?['username'] ??
-                                      S.of(context).usernameNotFound,
+                                      languageProvider
+                                          .translate('usernameNotFound'),
                                   style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
@@ -88,16 +84,6 @@ class UserProfile extends StatelessWidget {
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
-                                // Text(
-                                //   snapshot.data?['email'] ?? 'Email not found',
-                                //   style: TextStyle(
-                                //     fontSize: 18,
-                                //     color: darkThemeProvider.isDarkModeEnabled
-                                //         ? Colors.grey
-                                //         : Colors.grey,
-                                //   ),
-                                //   textAlign: TextAlign.center,
-                                // ),
                                 ListTile(),
                                 Text(
                                   snapshot.data?['bio'] ??
@@ -114,14 +100,15 @@ class UserProfile extends StatelessWidget {
                               ],
                             );
                           }
-                          return Text(S.of(context).userDataNotFound);
+                          return Text(
+                              languageProvider.translate('userDataNotFound'));
                         },
                       ),
                   ],
                 ),
                 const SizedBox(height: 30),
                 Text(
-                  S.of(context).achievements,
+                  languageProvider.translate('achievements'),
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -146,24 +133,24 @@ class UserProfile extends StatelessWidget {
                       AchievementIcon(
                         iconData: Icons.emoji_events,
                         color: Colors.amber,
-                        label: S.of(context).tenCourses,
+                        label: languageProvider.translate('tenCourses'),
                       ),
                       AchievementIcon(
                         iconData: Icons.emoji_events,
                         color: Colors.grey,
-                        label: S.of(context).fiveCourses,
+                        label: languageProvider.translate('fiveCourses'),
                       ),
                       AchievementIcon(
                         iconData: Icons.emoji_events,
                         color: Colors.brown,
-                        label: S.of(context).threeCourses,
+                        label: languageProvider.translate('threeCourses'),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 30),
                 Text(
-                  S.of(context).finishedCourses,
+                  languageProvider.translate('finishedCourses'),
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -195,9 +182,9 @@ class UserProfile extends StatelessWidget {
   }
 }
 
-Drawer _settingsDrawer(BuildContext context) {
+Drawer _settingsDrawer(
+    BuildContext context, LanguageProvider languageProvider) {
   var darkThemeProvider = Provider.of<DarkThemeProvider>(context);
-  var languageProvider = context.watch<LanguageProvider>();
   return Drawer(
     child: ListView(
       children: <Widget>[
@@ -212,7 +199,7 @@ Drawer _settingsDrawer(BuildContext context) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                S.of(context).settings,
+                languageProvider.translate('Settings'),
                 style: TextStyle(color: Colors.white, fontSize: 24),
               ),
               // Add a switch or any other widgets you want in the header
@@ -221,7 +208,10 @@ Drawer _settingsDrawer(BuildContext context) {
         ),
         ListTile(
           leading: Icon(Icons.edit),
-          title: Text(S.of(context).editProfile),
+          title: Text(
+            languageProvider.translate('Edit Profile'),
+            style: TextStyle(fontSize: 16),
+          ),
           onTap: () async {
             Navigator.pop(context);
             var authService = Provider.of<AuthService>(context, listen: false);
@@ -242,27 +232,30 @@ Drawer _settingsDrawer(BuildContext context) {
         ),
         ListTile(
           leading: Icon(Icons.dark_mode),
-          title: Text(S.of(context).darkMode),
+          title: Text(
+            languageProvider.translate('Dark Mode'),
+            style: TextStyle(fontSize: 16),
+          ),
           onTap: () {
             Navigator.pop(context);
             Provider.of<DarkThemeProvider>(context, listen: false)
                 .toggleDarkMode();
           },
         ),
-        // ListTile(
-        //   leading: Icon(Icons.language), // Add your desired icon
-        //   title: Text(
-        //     languageProvider.translate("language"),
-        //     style: TextStyle(fontSize: 16), // Adjust the font size if needed
-        //   ),
-        //   onTap: () {
-        //     showLanguageDialog(context, languageProvider);
-        //   },
-        //   // Add your desired trailing arrow icon
-        // ),
+        ListTile(
+          leading: Icon(Icons.language),
+          title: Text(
+            languageProvider.translate("Language"),
+            style: TextStyle(fontSize: 16),
+          ),
+          onTap: () {
+            showLanguageDialog(context, languageProvider);
+          },
+        ),
         ListTile(
           leading: Icon(Icons.settings),
-          title: Text('Account Settings'),
+          title: Text(languageProvider.translate('Account Settings'),
+              style: TextStyle(fontSize: 16)),
           onTap: () {
             Navigator.pop(context);
             Navigator.of(context).push(MaterialPageRoute(
@@ -282,7 +275,7 @@ void showLanguageDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text(languageProvider.translate('language')),
+        title: Text(languageProvider.translate('Language')),
         content: Column(
           children: [
             ListTile(
